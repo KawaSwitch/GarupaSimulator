@@ -174,7 +174,7 @@ namespace GarupaSimulator.ViewModels
 
             // サイトの表から情報を取得
             var items = doc.QuerySelectorAll("table > tbody > tr td, table > tbody > tr th");
-            var title = Util.RegexUtil.GetBracketEnclosedString(doc.GetElementById("i").TextContent);
+            var title = doc.QuerySelector("h2 > span").TextContent.InnerBracket();
 
             return new Card
             {
@@ -236,6 +236,8 @@ namespace GarupaSimulator.ViewModels
         #endregion
 
 
+        #region バインディング用フィールド
+
         /// <summary>
         /// カード情報
         /// </summary>
@@ -261,5 +263,7 @@ namespace GarupaSimulator.ViewModels
                 this.NotifyPropertyChanged(nameof(Cards));
             }
         }
+
+        #endregion
     }
 }
