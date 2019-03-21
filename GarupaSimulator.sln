@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.421
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GarupaSimulator", "GarupaSimulator\GarupaSimulator.csproj", "{1ECC68EF-5915-44EA-8FDF-83B7EB510921}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1ECC68EF-5915-44EA-8FDF-83B7EB510921}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1ECC68EF-5915-44EA-8FDF-83B7EB510921}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1ECC68EF-5915-44EA-8FDF-83B7EB510921}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1ECC68EF-5915-44EA-8FDF-83B7EB510921}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A2FF1D7A-F12F-4D3F-BF1A-17047B13FF11}
+	EndGlobalSection
+EndGlobal

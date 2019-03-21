@@ -1,0 +1,57 @@
+﻿<Window x:Class="GarupaSimulator.Views.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:gs="clr-namespace:GarupaSimulator"
+        xmlns:vm="clr-namespace:GarupaSimulator.ViewModels"
+        xmlns:cv="clr-namespace:GarupaSimulator.Converters"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance vm:MainViewModel, IsDesignTimeCreatable=True}"
+        Title="ガルパシミュレータ" Height="450" Width="800">
+    <Grid>
+        
+        <Grid.RowDefinitions>
+
+            <RowDefinition Height="*" />
+            <RowDefinition Height="60" />
+
+        </Grid.RowDefinitions>
+
+        <ListView x:Name="listViewTemp" Grid.Row="0"
+                  Background="AliceBlue"
+                  SelectedIndex="0"
+                  ItemsSource="{Binding Cards}">
+            <ListView.Resources>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="FontSize" Value="15"/>
+                </Style>
+
+                <cv:CardTypeConverter x:Key="CardTypeConverter" />
+            </ListView.Resources>
+
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn
+                        Header="名前" 
+                        DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn
+                        Header="タイトル" 
+                        DisplayMemberBinding="{Binding Title}" />
+                    <GridViewColumn
+                        Header="レアリティ" 
+                        DisplayMemberBinding="{Binding Rarity}" />
+                    <GridViewColumn
+                        Header="属性" 
+                        DisplayMemberBinding="{Binding CardType, Converter={StaticResource CardTypeConverter}}" />
+                </GridView>
+            </ListView.View>
+            
+        </ListView>
+
+        <StackPanel Grid.Row="1"  Orientation="Horizontal">
+            <Button IsEnabled="False" Content="編成" Width="80" />
+            <Button Content="更新" Width="80" />
+        </StackPanel>
+    </Grid>
+</Window>
