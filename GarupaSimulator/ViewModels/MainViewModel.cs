@@ -41,6 +41,8 @@ namespace GarupaSimulator.ViewModels
         internal MainViewModel(Views.MainWindow wnd)
         {
             _mainWnd = wnd;
+
+            // TODO: ファイルから既存情報を読み取る
         }
 
         /// <summary>
@@ -69,13 +71,16 @@ namespace GarupaSimulator.ViewModels
         public ICommand UpdateCardsCommand => updateCommand ?? (updateCommand = new DelegateCommand(UpdateCards, null));
 
         /// <summary>
+        /// カード情報の再取得
+        /// </summary>
+        private ICommand reUpdateCommand;
+        public ICommand ReUpdateCommand => reUpdateCommand ?? (reUpdateCommand = new DelegateCommand(ReUpdateCards, null));
+
+        /// <summary>
         /// カード情報を更新する
         /// </summary>
         private async void UpdateCards(object o)
         {
-            // TODO: この作業はなるべく頻繁に行わないよう差分を取る機構が必要
-
-
             // 各レア度のカード一覧のURL (スクレイピング先)
             string rare4url = @"https://gameo.jp/bang-dream/1623";
 
@@ -90,23 +95,48 @@ namespace GarupaSimulator.ViewModels
                 doc = await parser.ParseDocumentAsync(stream, cancelToken);
             }
 
-            // 表から星4カードのURLを取得
-            var rare4card_url = doc.QuerySelectorAll("#tablepress-9 > tbody tr td a")
-                .Select(item => ((AngleSharp.Html.Dom.IHtmlAnchorElement)item).Href);
+            // 表から星4カードの情報を取得
+            var rare4infos = doc.QuerySelectorAll("#tablepress-9 > tbody tr td a");
+            var newCardUrl = new List<string>();
 
-            // カード情報を取得
-            var cardInfo = await GetCardsInfoAsync(rare4card_url, cancelToken);
+            foreach (var info in rare4infos)
+            {
+                // カードタイトル(主キー)でローカルにあるかを判断
+                if (_cards.Any(card => card.Title == info.TextContent.InnerBracket()))
+                {
+                    // カード情報が既にローカルに存在したらスルー
+                    continue;
+                }
+                else
+                {
+                    // カード情報ページのURLを追加
+                    var url = (info as AngleSharp.Html.Dom.IHtmlAnchorElement).Href;
+                    if (url != null)
+                        newCardUrl.Add(url);
+                }
+            }
 
-            // カード情報更新
-            this.Cards = new ObservableCollection<Card>(cardInfo);
+            //// 表から星4カードのURLを取得
+            //var rare4card_url = doc.QuerySelectorAll("#tablepress-9 > tbody tr td a")
+            //    .Select(item => ((AngleSharp.Html.Dom.IHtmlAnchorElement)item).Href);
 
-            return;
+            // カード情報を取得して更新
+            var cardInfos = await GetCardsInfoAsync(newCardUrl, cancelToken);
+            cardInfos.ForEach(card => this.Cards.Add(card));
         }
 
         /// <summary>
-        /// URL群からそれぞれのカード情報をスクレイピングする
+        /// カード情報を1から更新し直す
         /// </summary>
-        /// <param name="urls">スクレイピング先のURL群</param>
+        private async void ReUpdateCards(object o)
+        {
+            await Task.Delay(1000);
+        }
+
+        /// <summary>
+            /// URL群からそれぞれのカード情報をスクレイピングする
+            /// </summary>
+            /// <param name="urls">スクレイピング先のURL群</param>
         private async Task<IEnumerable<Card>> GetCardsInfoAsync(IEnumerable<string> urls, System.Threading.CancellationToken cancelToken)
         {
             // URLからタスクを生成しカード情報を非同期で取得する
