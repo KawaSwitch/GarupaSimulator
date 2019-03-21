@@ -35,8 +35,17 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AngleSharp, Version=0.11.0.0, Culture=neutral, PublicKeyToken=e83494dcdc6d31ea, processorArchitecture=MSIL">
+      <HintPath>..\packages\AngleSharp.0.11.0\lib\net46\AngleSharp.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Runtime.CompilerServices.Unsafe, Version=4.0.4.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Runtime.CompilerServices.Unsafe.4.5.0\lib\netstandard2.0\System.Runtime.CompilerServices.Unsafe.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Text.Encoding.CodePages, Version=4.1.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.Text.Encoding.CodePages.4.5.0\lib\net461\System.Text.Encoding.CodePages.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -55,6 +64,12 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converters\BangDreamConverter.cs" />
+    <Compile Include="Properties\BangDreamResources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BangDreamResources.resx</DependentUpon>
+    </Compile>
     <Compile Include="Card.cs" />
     <Compile Include="Properties\CardInfoResources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -64,6 +79,7 @@
     <Compile Include="Converters\CardConverter.cs" />
     <Compile Include="Util\EnumUtil.cs" />
     <Compile Include="Util\Localize.cs" />
+    <Compile Include="Util\RegexUtil.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="WpfUtil\EventArgs\CloseViewEventArgs.cs" />
     <Compile Include="WpfUtil\DelegateCommand.cs" />
@@ -99,6 +115,11 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
+    <EmbeddedResource Include="Properties\BangDreamResources.ja-JP.resx" />
+    <EmbeddedResource Include="Properties\BangDreamResources.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>BangDreamResources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
     <EmbeddedResource Include="Properties\CardInfoResources.ja-JP.resx" />
     <EmbeddedResource Include="Properties\CardInfoResources.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
@@ -108,6 +129,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

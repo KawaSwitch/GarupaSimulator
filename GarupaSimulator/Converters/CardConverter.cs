@@ -25,7 +25,7 @@ namespace GarupaSimulator.Converters
         }
 
         /// <summary>
-        /// プリンタ原点の型変換 string => Card.Type
+        /// カード属性の型変換 string => Card.Type
         /// </summary>
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {

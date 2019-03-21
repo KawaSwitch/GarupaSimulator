@@ -28,6 +28,7 @@
                 </Style>
 
                 <cv:CardTypeConverter x:Key="CardTypeConverter" />
+                <cv:BandTypeConverter x:Key="BandTypeConverter" />
             </ListView.Resources>
 
             <ListView.View>
@@ -39,11 +40,23 @@
                         Header="タイトル" 
                         DisplayMemberBinding="{Binding Title}" />
                     <GridViewColumn
+                        Header="所属バンド"
+                        DisplayMemberBinding="{Binding BandName, Converter={StaticResource BandTypeConverter}}" />
+                    <GridViewColumn
                         Header="レアリティ" 
                         DisplayMemberBinding="{Binding Rarity}" />
                     <GridViewColumn
                         Header="属性" 
                         DisplayMemberBinding="{Binding CardType, Converter={StaticResource CardTypeConverter}}" />
+                    <GridViewColumn
+                        Header="スキル名"
+                        DisplayMemberBinding="{Binding SkillName}" />
+                    <GridViewColumn
+                        Header="スキル効果"
+                        DisplayMemberBinding="{Binding SkillEffect}" />
+                    <GridViewColumn
+                        Header="総合値"
+                        DisplayMemberBinding="{Binding MaxTotal}" />
                 </GridView>
             </ListView.View>
             
@@ -51,7 +64,7 @@
 
         <StackPanel Grid.Row="1"  Orientation="Horizontal">
             <Button IsEnabled="False" Content="編成" Width="80" />
-            <Button Content="更新" Width="80" />
+            <Button Content="更新" Width="80" Command="{Binding UpdateCardsCommand}" />
         </StackPanel>
     </Grid>
 </Window>

@@ -11,23 +11,77 @@ namespace GarupaSimulator
     /// </summary>
     internal class Card
     {
+        #region Enum definitions
+
         /// <summary>
         /// カード属性
         /// </summary>
         internal enum Type
         {
+            /// <summary>
+            /// パワフル
+            /// </summary>
             [Util.LocalizedDescription(nameof(Properties.CardInfoResources.PowerfulType), typeof(Properties.CardInfoResources))]
             Powerful,
 
+            /// <summary>
+            /// クール
+            /// </summary>
             [Util.LocalizedDescription(nameof(Properties.CardInfoResources.CoolType), typeof(Properties.CardInfoResources))]
             Cool,
 
+            /// <summary>
+            /// ピュア
+            /// </summary>
             [Util.LocalizedDescription(nameof(Properties.CardInfoResources.PureType), typeof(Properties.CardInfoResources))]
             Pure,
 
+            /// <summary>
+            /// ハッピー
+            /// </summary>
             [Util.LocalizedDescription(nameof(Properties.CardInfoResources.HappyType), typeof(Properties.CardInfoResources))]
             Happy
         }
+
+        /// <summary>
+        /// 所属バンド
+        /// </summary>
+        internal enum Band
+        {
+            /// <summary>
+            /// Poppin'Party
+            /// </summary>
+            [Util.LocalizedDescription(nameof(Properties.BangDreamResources.PoppinParty), typeof(Properties.BangDreamResources))]
+            PoppinParty,
+
+            /// <summary>
+            /// Afterglow
+            /// </summary>
+            [Util.LocalizedDescription(nameof(Properties.BangDreamResources.Afterglow), typeof(Properties.BangDreamResources))]
+            Afterglow,
+
+            /// <summary>
+            /// Pastel * Palettes
+            /// </summary>
+            [Util.LocalizedDescription(nameof(Properties.BangDreamResources.PastelPalettes), typeof(Properties.BangDreamResources))]
+            PastelPalettes,
+
+            /// <summary>
+            /// Roselia
+            /// </summary>
+            [Util.LocalizedDescription(nameof(Properties.BangDreamResources.Roselia), typeof(Properties.BangDreamResources))]
+            Roselia,
+
+            /// <summary>
+            /// ハロー、ハッピーワールド！
+            /// </summary>
+            [Util.LocalizedDescription(nameof(Properties.BangDreamResources.HelloHappyWorld), typeof(Properties.BangDreamResources))]
+            HelloHappyWorld,
+        }
+
+        #endregion
+
+        #region Field definitions
 
         /// <summary>
         /// 名前
@@ -40,6 +94,11 @@ namespace GarupaSimulator
         public string Title { get; set; }
 
         /// <summary>
+        /// 所属バンド
+        /// </summary>
+        public Band BandName { get; set; }
+
+        /// <summary>
         /// レアリティ
         /// </summary>
         public int Rarity { get; set; }
@@ -48,5 +107,34 @@ namespace GarupaSimulator
         /// 属性
         /// </summary>
         public Type CardType { get; set; }
+
+        /// <summary>
+        /// 最大総合力
+        /// </summary>
+        public int MaxTotal { get { return MaxPerformance + MaxTechnique + MaxVisual; } }
+
+        /// <summary>
+        /// 最大パフォーマンス値
+        /// </summary>
+        public int MaxPerformance { get; set; }
+        /// <summary>
+        /// 最大テクニック値
+        /// </summary>
+        public int MaxTechnique { get; set; }
+        /// <summary>
+        /// 最大ビジュアル値
+        /// </summary>
+        public int MaxVisual { get; set; }
+
+        /// <summary>
+        /// スキル名
+        /// </summary>
+        public string SkillName { get; set; }
+        /// <summary>
+        /// スキルの効果
+        /// </summary>
+        public string SkillEffect { get; set; } // とりあえず文章
+
+        #endregion
     }
 }
