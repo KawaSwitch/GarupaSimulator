@@ -36,13 +36,30 @@ namespace GarupaSimulator.ViewModels
             new List<string>() { "弦巻こころ", "瀬田薫", "北沢はぐみ", "松原花音", "奥沢美咲" }, // Hello Happy World
         };
 
+        /// <summary>
+        /// カード情報を保存するパス
+        /// </summary>
+        private string _cardInfoPath = @"cardList.xml";
+
+
         #region ctor
 
         internal MainViewModel(Views.MainWindow wnd)
         {
             _mainWnd = wnd;
 
-            // TODO: ファイルから既存情報を読み取る
+            // ファイルから既存情報を読み取る
+            var cardList = File.BinarySerializer.LoadFromBinaryFile(_cardInfoPath) as IEnumerable<Card>;
+
+            if (cardList != null)
+                this.Cards = new ObservableCollection<Card>(cardList);
+            else
+            {
+                System.Windows.MessageBox.Show(
+                    "カード情報が保存されていません.\nインターネットに接続し更新ボタンから最新のカード情報を取得する必要があります.",
+                    "カード設定未保存");
+                this.Cards = new ObservableCollection<Card>();
+            }
         }
 
         /// <summary>
@@ -136,6 +153,12 @@ namespace GarupaSimulator.ViewModels
                 }
             }
 
+            if (newCardUrl.Count == 0) // 更新の必要なし
+            {
+                this.ShowUpdatedCountMessage(newCardUrl.Count);
+                return;
+            }
+
             // カード情報を取得
             var cardInfos = await GetCardsInfoAsync(newCardUrl, cancelToken);
 
@@ -144,6 +167,10 @@ namespace GarupaSimulator.ViewModels
                 this.Cards = new ObservableCollection<Card>(cardInfos);
             else
                 cardInfos.ForEach(card => this.Cards.Add(card));
+
+            // ファイル更新
+            File.BinarySerializer.SaveToBinaryFile(this.Cards, _cardInfoPath);
+            this.ShowUpdatedCountMessage(newCardUrl.Count);
         }
 
         /// <summary>
@@ -198,6 +225,19 @@ namespace GarupaSimulator.ViewModels
         #region Private Helper
 
         /// <summary>
+        /// カード情報の更新数をモーダルでメッセージ表示する
+        /// </summary>
+        /// <param name="updateCount">更新件数</param>
+        private void ShowUpdatedCountMessage(int updateCount)
+        {
+            var message = String.Format("更新件数: {0}", updateCount);
+            if (updateCount == 0)
+                message = message.Insert(0, "このカード情報は最新です.\n");
+
+            System.Windows.MessageBox.Show(message, "更新結果");
+        }
+
+        /// <summary>
         /// バンド名を<see cref="string"/>から<see cref="Card.Band"/>へ変換
         /// </summary>
         private Card.Band ConvertBandName(string name)
@@ -241,13 +281,8 @@ namespace GarupaSimulator.ViewModels
         /// <summary>
         /// カード情報
         /// </summary>
-        private ObservableCollection<Card> _cards = new ObservableCollection<Card>()
-            {
-            // for debug
-                new Card {Name = "戸山香澄", Title="debug", BandName=Card.Band.PoppinParty, Rarity=4, CardType=Card.Type.Happy },
-                new Card {Name = "市ヶ谷有咲", Title="debug", BandName=Card.Band.PoppinParty, Rarity=4, CardType=Card.Type.Cool },
-                new Card {Name = "花園たえ", Title="debug", BandName=Card.Band.PoppinParty, Rarity=4, CardType=Card.Type.Pure },
-            };
+        private ObservableCollection<Card> _cards;
+
         /// <summary>
         /// カード情報 変更通知用プロパティ
         /// </summary>

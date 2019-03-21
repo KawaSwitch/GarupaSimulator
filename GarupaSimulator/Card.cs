@@ -9,6 +9,7 @@ namespace GarupaSimulator
     /// <summary>
     /// 各種カード情報
     /// </summary>
+    [Serializable()]
     internal class Card
     {
         #region Enum definitions

@@ -67,6 +67,7 @@
     <Compile Include="Converters\BangDreamConverter.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\StringExtension.cs" />
+    <Compile Include="File.cs" />
     <Compile Include="Properties\BangDreamResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
