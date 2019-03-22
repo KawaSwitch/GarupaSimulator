@@ -80,6 +80,7 @@
       <DependentUpon>CardInfoResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Converters\CardConverter.cs" />
+    <Compile Include="Util\DirectoryUtil.cs" />
     <Compile Include="Util\EnumUtil.cs" />
     <Compile Include="Util\Localize.cs" />
     <Compile Include="Util\RegexUtil.cs" />

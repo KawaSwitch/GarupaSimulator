@@ -8,7 +8,7 @@
         xmlns:cv="clr-namespace:GarupaSimulator.Converters"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance vm:MainViewModel, IsDesignTimeCreatable=True}"
-        Title="ガルパシミュレータ" Height="450" Width="800">
+        Title="ガルパシミュレータ" Height="800" Width="1000">
     <Grid>
         
         <Grid.RowDefinitions>
@@ -29,10 +29,21 @@
 
                 <cv:CardTypeConverter x:Key="CardTypeConverter" />
                 <cv:BandTypeConverter x:Key="BandTypeConverter" />
+                <cv:ImageConverter x:Key="ImageConverter" />
             </ListView.Resources>
 
             <ListView.View>
                 <GridView>
+                    <GridViewColumn Header="アイコン">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image 
+                                    Source="{Binding IconBeforePath, Converter={StaticResource ImageConverter}}"
+                                    Width="100" Height="100"
+                                    RenderOptions.BitmapScalingMode="Unspecified"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
                     <GridViewColumn
                         Header="名前" 
                         DisplayMemberBinding="{Binding Name}" />
@@ -49,14 +60,14 @@
                         Header="属性" 
                         DisplayMemberBinding="{Binding CardType, Converter={StaticResource CardTypeConverter}}" />
                     <GridViewColumn
+                        Header="総合値"
+                        DisplayMemberBinding="{Binding MaxTotal}" />
+                    <GridViewColumn
                         Header="スキル名"
                         DisplayMemberBinding="{Binding SkillName}" />
                     <GridViewColumn
                         Header="スキル効果"
                         DisplayMemberBinding="{Binding SkillEffect}" />
-                    <GridViewColumn
-                        Header="総合値"
-                        DisplayMemberBinding="{Binding MaxTotal}" />
                 </GridView>
             </ListView.View>
             

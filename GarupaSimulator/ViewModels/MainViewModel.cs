@@ -41,7 +41,12 @@ namespace GarupaSimulator.ViewModels
         /// </summary>
         private string _cardInfoPath = @"cardList.xml";
 
-        #region スクレイピング先情報
+        /// <summary>
+        /// カードの特訓前アイコンを保存するディレクトリ名
+        /// </summary>
+        private string _cardIconBeforeDir = "downloadIcons";
+
+        #region スクレイピング情報
 
         /// <summary>
         /// レア度4のカード一覧のスクレイピング先URL
@@ -52,6 +57,10 @@ namespace GarupaSimulator.ViewModels
         /// レア度4のカード一覧用CSSセレクタ
         /// </summary>
         private static readonly string _rare4selector = "#tablepress-9 > tbody tr td a";
+        /// <summary>
+        /// レア度4のカードアイコン用CSSセレクタ
+        /// </summary>
+        private static readonly string _rare4IconSelector = "#tablepress-9 > tbody tr td img";
 
         /// <summary>
         /// レア度3のカード一覧のスクレイピング先URL
@@ -62,6 +71,10 @@ namespace GarupaSimulator.ViewModels
         /// レア度3のカード一覧用CSSセレクタ
         /// </summary>
         private static readonly string _rare3selector = "#tablepress-10 > tbody tr td a";
+        /// <summary>
+        /// レア度3のカードアイコン用CSSセレクタ
+        /// </summary>
+        private static readonly string _rare3IconSelector = "#tablepress-10 > tbody tr td img";
 
         #endregion
 
@@ -138,8 +151,8 @@ namespace GarupaSimulator.ViewModels
             var cancelToken = tokenSource.Token;
 
             // ローカルに存在しないカードのURLを取得
-            var newCard4Urls = await GetNewCardUrlsAsync(_rare4url, _rare4selector, isCleanUpdate, cancelToken); // 新規星4
-            var newCard3Urls = await GetNewCardUrlsAsync(_rare3url, _rare3selector, isCleanUpdate, cancelToken); // 新規星3
+            var newCard4Urls = await GetNewCardUrlsAsync(_rare4url, _rare4selector, _rare4IconSelector, isCleanUpdate, cancelToken); // 新規星4
+            var newCard3Urls = await GetNewCardUrlsAsync(_rare3url, _rare3selector, _rare3IconSelector, isCleanUpdate, cancelToken); // 新規星3
             var newCardUrls = newCard4Urls.Union(newCard3Urls).ToList();
 
             // ローカルとサーバのカード一覧が同じであれば更新しない
@@ -150,6 +163,7 @@ namespace GarupaSimulator.ViewModels
             }
 
             // 新規カード情報を取得
+            Util.DirectoryUtil.CreateDirectoryIfNeeded(_cardIconBeforeDir);
             var cardInfos = await GetCardsInfoAsync(newCardUrls, cancelToken);
 
             // ビュー更新
@@ -167,7 +181,7 @@ namespace GarupaSimulator.ViewModels
         /// ローカルに存在しない新規カードのURLを取得する
         /// </summary>
         /// <param name="url">スクレイピング先のカード一覧のURL</param>
-        private async Task<IEnumerable<string>> GetNewCardUrlsAsync(string url, string selector, bool isCleanUpdate, System.Threading.CancellationToken cancelToken)
+        private async Task<IEnumerable<(string, string)>> GetNewCardUrlsAsync(string url, string selector, string iconSelector, bool isCleanUpdate, System.Threading.CancellationToken cancelToken)
         {
             // htmlソースをパース
             var doc = default(AngleSharp.Html.Dom.IHtmlDocument);
@@ -179,26 +193,30 @@ namespace GarupaSimulator.ViewModels
 
             // 表からカードの情報を取得
             var infos = doc.QuerySelectorAll(selector);
+            var iconInfos = doc.QuerySelectorAll(iconSelector).ToList();
 
             if (isCleanUpdate)
             {
                 return infos
-                    .Select(info => (info as AngleSharp.Html.Dom.IHtmlAnchorElement).Href)
+                    .Select((info, index) => 
+                        ((info as AngleSharp.Html.Dom.IHtmlAnchorElement).Href, 
+                        (iconInfos[2 * index] as AngleSharp.Html.Dom.IHtmlImageElement).Source))
                     .ToList();
             }
             else
             {
-                var newCardUrls = new List<string>();
+                var newCardUrls = new List<(string, string)>();
 
-                foreach (var info in infos)
+                foreach (var (info, index) in infos.WithIndex())
                 {
                     // カードタイトル(主キー)がローカルに存在しなかったら
                     if (_cards.Any(card => card.Title == info.TextContent.InnerBracket()) == false)
                     {
-                        // カード情報ページのURLを追加
+                        // カード情報ページと画像アイコンのURLを追加
                         var cardUrl = (info as AngleSharp.Html.Dom.IHtmlAnchorElement).Href;
-                        if (cardUrl != null)
-                            newCardUrls.Add(cardUrl);
+                        var iconUrl = (iconInfos[2 * index] as AngleSharp.Html.Dom.IHtmlImageElement).Source;
+                        if (cardUrl != null && iconUrl != null)
+                            newCardUrls.Add((cardUrl, iconUrl));
                     }
                     else
                     {
@@ -212,10 +230,27 @@ namespace GarupaSimulator.ViewModels
         }
 
         /// <summary>
+        /// 画像を指定URLからダウンロードしてパスへ出力する
+        /// </summary>
+        /// <param name="imgUrl">ダウンロードする画像のURL</param>
+        /// <param name="outputPath">ローカルの出力パス</param>
+        private async void DownloadImageAsync(string imgUrl, string outputPath)
+        {
+            var res = await _client.GetAsync(
+                imgUrl,
+                HttpCompletionOption.ResponseContentRead);
+
+            // リソースを出力パスへ出力
+            using (var fileStream = System.IO.File.Create(outputPath))
+            using (var httpStream = await res.Content.ReadAsStreamAsync())
+                httpStream.CopyTo(fileStream);
+        }
+
+        /// <summary>
         /// URL群からそれぞれのカード情報をスクレイピングする
         /// </summary>
         /// <param name="urls">スクレイピング先のURL群</param>
-        private async Task<IEnumerable<Card>> GetCardsInfoAsync(IEnumerable<string> urls, System.Threading.CancellationToken cancelToken)
+        private async Task<IEnumerable<Card>> GetCardsInfoAsync(IEnumerable<(string cardUrl, string iconUrl)> urls, System.Threading.CancellationToken cancelToken)
         {
             // URLからタスクを生成しカード情報を非同期で取得する
             var taskList = urls.Select(url => GetCardInfoAsync(url, cancelToken));
@@ -227,23 +262,28 @@ namespace GarupaSimulator.ViewModels
         /// URLからカード情報をスクレイピングする
         /// </summary>
         /// <param name="url">スクレイピング先のURL</param>
-        private async Task<Card> GetCardInfoAsync(string url, System.Threading.CancellationToken cancelToken)
+        private async Task<Card> GetCardInfoAsync((string cardUrl, string iconUrl) url, System.Threading.CancellationToken cancelToken)
         {
             var doc = default(AngleSharp.Html.Dom.IHtmlDocument);
 
-            using (var stream = await _client.GetStreamAsync(new Uri(url)))
+            using (var stream = await _client.GetStreamAsync(new Uri(url.cardUrl)))
             {
                 var parser = new AngleSharp.Html.Parser.HtmlParser();
                 doc = await parser.ParseDocumentAsync(stream, cancelToken);
             }
 
-            // サイトの表から情報を取得
+            // サイトの表からカード情報を取得
             var items = doc.QuerySelectorAll("table > tbody > tr td, table > tbody > tr th");
+            var name = items[5].TextContent.Replace(" ", "");
             var title = doc.QuerySelector("h2 > span").TextContent.InnerBracket();
+
+            // アイコン情報を取得しローカルにダウンロード
+            var iconBeforePath =_cardIconBeforeDir + @"/" + name + "[" + title + "]" + ".png";
+            this.DownloadImageAsync(url.iconUrl, iconBeforePath);
 
             return new Card
             {
-                Name = items[5].TextContent.Replace(" ", ""),
+                Name = name,
                 Title = title,
                 BandName = this.ConvertBandName(items[7].TextContent),
                 Rarity = items[1].TextContent.Count(),
@@ -255,6 +295,8 @@ namespace GarupaSimulator.ViewModels
 
                 SkillName = items[16].TextContent,
                 SkillEffect = items[17].TextContent,
+
+                IconBeforePath = iconBeforePath,
             };
         }
 

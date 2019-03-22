@@ -136,6 +136,24 @@ namespace GarupaSimulator
         /// </summary>
         public string SkillEffect { get; set; } // とりあえず文章
 
+        /// <summary>
+        /// 特訓前 アイコン画像のパス
+        /// </summary>
+        public string IconBeforePath { get; set; }
+        /// <summary>
+        /// 特訓後 アイコン画像のパス
+        /// </summary>
+        public string IconAfterPath { get; set; }
+
+        /// <summary>
+        /// 特訓前 全体画像のパス
+        /// </summary>
+        public string ImageBeforePath { get; set; }
+        /// <summary>
+        /// 特訓後 全体画像のパス
+        /// </summary>
+        public string ImageAfterPath { get; set; }
+
         #endregion
     }
 }
