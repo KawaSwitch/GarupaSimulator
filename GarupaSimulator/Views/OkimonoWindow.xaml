@@ -18,7 +18,7 @@
                     <PropertyGroupDescription PropertyName="LocationName" />
                 </CollectionViewSource.GroupDescriptions>
             </CollectionViewSource>
-            
+
         </Grid.Resources>
 
         <Grid.ColumnDefinitions>
@@ -94,18 +94,28 @@
             <!-- グルーピングのスタイル -->
             <ListView.GroupStyle>
                 <GroupStyle>
-                    
-                    <!-- ヘッダスタイル -->
-                    <GroupStyle.HeaderTemplate>
-                        <DataTemplate>
-                            <DockPanel Background="LightBlue">
-                                <!-- NOTE: グルーピング結果には分割結果のCollectionViewGroupがバインドされている -->
-                                <TextBlock Background="Transparent"
-                                           Text="{Binding Items[0], Converter={StaticResource LocationNameConverter}}" 
-                                           Foreground="Blue" FontWeight="Bold" FontSize="15"/>
-                            </DockPanel>
-                        </DataTemplate>
-                    </GroupStyle.HeaderTemplate>
+                    <GroupStyle.ContainerStyle>
+                        <Style TargetType="GroupItem">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type GroupItem}">
+                                        <Expander IsExpanded="True" Background="Transparent" BorderThickness="1 1 1 5">
+                                            <Expander.Header>
+                                                <DockPanel>
+                                                    <!--NOTE: グルーピング結果には分割結果のCollectionViewGroupがバインドされている-->
+                                                    <TextBlock Text="{Binding Name}" Margin="5 0 0 0" 
+                                                               FontSize="15" FontWeight="Bold" Foreground="RoyalBlue"/>
+                                                </DockPanel>
+                                            </Expander.Header>
+                                            <Expander.Content>
+                                                <ItemsPresenter />
+                                            </Expander.Content>
+                                        </Expander>
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </GroupStyle.ContainerStyle>
                 </GroupStyle>
             </ListView.GroupStyle>
 
@@ -123,11 +133,11 @@
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
 
-                    <!-- エリア名 -->
-                    <GridViewColumn DisplayMemberBinding="{Binding Name}">
+                    <!-- アイテム名 -->
+                    <GridViewColumn>
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <TextBlock TextWrapping="Wrap" Text="{Binding}" />
+                                <TextBlock TextWrapping="Wrap" Text="{Binding Name}" Foreground="#FF042271" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
@@ -145,7 +155,13 @@
                     </GridViewColumn>
                     
                     <!-- 補正値メッセージ -->
-                    <GridViewColumn DisplayMemberBinding="{Binding BonusMessage}" />
+                    <GridViewColumn>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock TextWrapping="Wrap" Text="{Binding BonusMessage}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
 
                 </GridView>
             </ListView.View>
