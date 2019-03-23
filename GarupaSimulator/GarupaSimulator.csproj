@@ -210,5 +210,8 @@
     <Resource Include="Resources\OkimonoAreaIcons\江戸川楽器店.png" />
     <Resource Include="Resources\OkimonoAreaIcons\流星堂.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\okimonoIcons\極上コーヒー.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
