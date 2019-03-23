@@ -78,7 +78,6 @@
         <!-- 置物選択 -->
         <ListView x:Name="listViewOkimonos" Grid.Column="1"
                   Background="AliceBlue"
-                  SelectedIndex="0"
                   ScrollViewer.CanContentScroll="False"
                   ItemsSource="{Binding Source={StaticResource okimonoView}}"
                   SelectionChanged="ListViewOkimonos_SelectionChanged">
@@ -95,6 +94,13 @@
                 <cv:LocationNameConverter x:Key="LocationNameConverter" />
             </ListView.Resources>
 
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="Focusable" Value="false"/>
+                    <Setter Property="FontSize" Value="15" />
+                </Style>
+            </ListView.ItemContainerStyle>
+
             <!-- グルーピングのスタイル -->
             <ListView.GroupStyle>
                 <GroupStyle>
@@ -109,8 +115,10 @@
                                                     <!--NOTE: グルーピング結果には分割結果のCollectionViewGroupがバインドされている-->
                                                     <TextBlock Text="{Binding Name}" Margin="5 0 0 0" 
                                                                FontSize="15" FontWeight="Bold" Foreground="RoyalBlue"/>
+                                                    <!-- グループ内の置物全てのレベルを最小化 -->
                                                     <Button Margin="5 0 0 0" Width="20" Background="#AA5522EE"
                                                         Command="{Binding Data.SetAllLevelMin, Source={StaticResource proxy}}" CommandParameter="{Binding Items}" />
+                                                    <!-- グループ内の置物全てのレベルを最大化 -->
                                                     <Button Margin="5 0 0 0" Width="20" Background="#AAEE2255"
                                                         Command="{Binding Data.SetAllLevelMax, Source={StaticResource proxy}}" CommandParameter="{Binding Items}" />
                                                 </DockPanel>
