@@ -40,13 +40,24 @@
                 IsSynchronizedWithCurrentItem="True"
                 ItemsSource="{Binding Areas}">
             <ListView.Resources>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="FontSize" Value="15"/>
-                </Style>
                 <Style TargetType="GridViewColumnHeader">
                     <Setter Property="Visibility" Value="Collapsed" />
                 </Style>
+
+                <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}">Red</SolidColorBrush>
             </ListView.Resources>
+
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="FontSize" Value="15"/>
+                    <Style.Triggers>
+                        <Trigger Property="IsSelected" Value="True">
+                            <Setter Property="Background" Value="#AAAAD2EE"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+
+            </ListView.ItemContainerStyle>
 
             <ListView.View>
                 <GridView>
