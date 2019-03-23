@@ -42,6 +42,11 @@ namespace GarupaSimulator.ViewModels
         private string _cardInfoPath = @"cardList.xml";
 
         /// <summary>
+        /// 置物情報を保存するパス
+        /// </summary>
+        private string _okimonoInfoPath = @"okimonoList.xml";
+
+        /// <summary>
         /// カードの特訓前アイコンを保存するディレクトリ名
         /// </summary>
         private string _cardIconBeforeDir = "downloadIcons";
@@ -78,15 +83,34 @@ namespace GarupaSimulator.ViewModels
 
         #endregion
 
-
-
         #region ctor
 
-        internal MainViewModel(Views.MainWindow wnd)
+        /// <summary>
+        /// コンストラクタ
+        /// </summary>
+        /// <param name="wnd">メインビュー</param>
+        internal MainViewModel(Views.MainWindow wnd) : base()
         {
             _mainWnd = wnd;
 
-            // ファイルから既存情報を読み取る
+            // 各種保存データ読み込み
+            this.LoadDatas();
+        }
+
+        /// <summary>
+        /// 各種保存データをファイルから読み込み格納する
+        /// </summary>
+        private void LoadDatas()
+        {
+            this.LoadCardDatas(); // カード
+            this.LoadOkimonoDatas(); // 置物
+        }
+        /// <summary>
+        /// カードデータをファイルから読み込む
+        /// </summary>
+        private void LoadCardDatas()
+        {
+            // ファイルから保存情報を読み取る
             var cardList = File.BinarySerializer.LoadFromBinaryFile(_cardInfoPath) as IEnumerable<Card>;
 
             if (cardList != null)
@@ -97,6 +121,435 @@ namespace GarupaSimulator.ViewModels
                     "カード情報が保存されていません.\nインターネットに接続し更新ボタンから最新のカード情報を取得する必要があります.",
                     "カード設定未保存");
                 this.Cards = new ObservableCollection<Card>();
+            }
+        }
+        /// <summary>
+        /// 置物データをファイルから読み込む
+        /// </summary>
+        private void LoadOkimonoDatas()
+        {
+            // 置物保存のデータファイルが存在しなければ作成（ハードコーディングのデータ）
+            // TODO: いつかスクレイピング？
+            if (!System.IO.File.Exists(_okimonoInfoPath))
+            {
+                // 全エリアと置物情報
+                var _areaDataLocal = new List<OkimonoArea>()
+                {
+                    new OkimonoArea {
+                        Name = "江戸川楽器店",
+                        AreaItems = new List<Okimono> {
+                            // スタジオ(マイク)
+                            new Okimono {
+                                Name = "スタジオマイク",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.PoppinParty },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "ロックマイク",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.Afterglow },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "アイドルマイク",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.PastelPalettes },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "青薔薇のマイク",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.Roselia },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "マーチングマイク",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.HelloHappyWorld },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+
+                            // スタジオ(ギター)
+                            new Okimono {
+                                Name = "たえのギター",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.PoppinParty },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "モカのギター",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.Afterglow },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "日菜のギター",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.PastelPalettes },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "紗夜のギター",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.Roselia },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "薫のギター",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.HelloHappyWorld },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+
+                            // スタジオ(ベース)
+                            new Okimono {
+                                Name = "りみのベース",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.PoppinParty },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "ひまりのベース",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.Afterglow },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "千聖のベース",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.PastelPalettes },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "リサのベース",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.Roselia },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "はぐみのベース",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.HelloHappyWorld },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+
+                            // スタジオ(ドラム)
+                            new Okimono {
+                                Name = "沙綾のドラム",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.PoppinParty },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "巴のドラム",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.Afterglow },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "麻弥のドラム",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.PastelPalettes },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "あこのドラム",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.Roselia },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "花音のドラム",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.HelloHappyWorld },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+
+                            // スタジオ(その他)
+                            new Okimono {
+                                Name = "有咲のキーボード",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.PoppinParty },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "つぐみのキーボード",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.Afterglow },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "イヴのキーボード",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.PastelPalettes },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "燐子のキーボード",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.Roselia },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "美咲のDJセット",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.HelloHappyWorld },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (20, 20, 20), (25, 25, 25), (30, 30, 30), (35, 35, 35), (40, 40, 40), (45, 45, 45) },
+                                Level = 0,
+                            },
+                        }
+                    },
+                    new OkimonoArea { Name = "CiRCLE",
+                        AreaItems = new List<Okimono> {
+                            // ポスター
+                            new Okimono {
+                                Name = "ポピパのポスター",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.PoppinParty },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (60, 60, 60), (70, 70, 70), (80, 80, 80), (90, 90, 90), (100, 100, 100), (110, 110, 110) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "Afterglowのポスター",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.Afterglow },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (60, 60, 60), (70, 70, 70), (80, 80, 80), (90, 90, 90), (100, 100, 100), (110, 110, 110) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "パスパレのポスター",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.PastelPalettes },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (60, 60, 60), (70, 70, 70), (80, 80, 80), (90, 90, 90), (100, 100, 100), (110, 110, 110) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "Roseliaのポスター",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.Roselia },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (60, 60, 60), (70, 70, 70), (80, 80, 80), (90, 90, 90), (100, 100, 100), (110, 110, 110) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "ハロハピのポスター",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.HelloHappyWorld },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (60, 60, 60), (70, 70, 70), (80, 80, 80), (90, 90, 90), (100, 100, 100), (110, 110, 110) },
+                                Level = 0,
+                            },
+
+                            // フライヤー
+                            new Okimono {
+                                Name = "ポピパのフライヤー",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.PoppinParty },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (60, 60, 60), (70, 70, 70), (80, 80, 80), (90, 90, 90), (100, 100, 100), (110, 110, 110) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "Afterglowのフライヤー",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.Afterglow },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (60, 60, 60), (70, 70, 70), (80, 80, 80), (90, 90, 90), (100, 100, 100), (110, 110, 110) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "パスパレのフライヤー",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.PastelPalettes },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (60, 60, 60), (70, 70, 70), (80, 80, 80), (90, 90, 90), (100, 100, 100), (110, 110, 110) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "Roseliaのフライヤー",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.Roselia },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (60, 60, 60), (70, 70, 70), (80, 80, 80), (90, 90, 90), (100, 100, 100), (110, 110, 110) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "ハロハピのフライヤー",
+                                TargetTypes = new List<Card.Type>(),
+                                TargetBands = new List<Card.Band>{ Card.Band.HelloHappyWorld },
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (60, 60, 60), (70, 70, 70), (80, 80, 80), (90, 90, 90), (100, 100, 100), (110, 110, 110) },
+                                Level = 0,
+                            },
+                        },
+                    },
+                    new OkimonoArea { Name = "流星堂",
+                        AreaItems = new List<Okimono> {
+                            // センタースペース
+                            new Okimono {
+                                Name = "噴水",
+                                TargetTypes = new List<Card.Type> { Card.Type.Pure },
+                                TargetBands = new List<Card.Band>(),
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (10, 10, 10), (30, 30, 30), (50, 50, 50), (70, 70, 70), (100, 100, 100), (120, 120, 120) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "足湯",
+                                TargetTypes = new List<Card.Type> { Card.Type.Cool },
+                                TargetBands = new List<Card.Band>(),
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (10, 10, 10), (30, 30, 30), (50, 50, 50), (70, 70, 70), (100, 100, 100), (120, 120, 120) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "ミッシェルの銅像",
+                                TargetTypes = new List<Card.Type> { Card.Type.Happy },
+                                TargetBands = new List<Card.Band>(),
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (10, 10, 10), (30, 30, 30), (50, 50, 50), (70, 70, 70), (100, 100, 100), (120, 120, 120) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "ヤシの木",
+                                TargetTypes = new List<Card.Type> { Card.Type.Powerful },
+                                TargetBands = new List<Card.Band>(),
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (10, 10, 10), (30, 30, 30), (50, 50, 50), (70, 70, 70), (100, 100, 100), (120, 120, 120) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "盆栽セット",
+                                TargetTypes = new List<Card.Type> { Card.Type.Cool, Card.Type.Happy, Card.Type.Powerful, Card.Type.Pure },
+                                TargetBands = new List<Card.Band>(),
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (5, 5, 5), (10, 10, 10), (15, 15, 15), (20, 20, 20), (25, 25, 25) },
+                                Level = 0,
+                            },
+                        },
+                    },
+                    new OkimonoArea { Name = "カフェテリア",
+                        AreaItems = new List<Okimono> {
+                            // おすすめメニュー
+                            new Okimono {
+                                Name = "ミートソースパスタ",
+                                TargetTypes = new List<Card.Type> { Card.Type.Pure },
+                                TargetBands = new List<Card.Band>(),
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (10, 10, 10), (30, 30, 30), (50, 50, 50), (70, 70, 70), (100, 100, 100), (120, 120, 120) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "アサイーボウル",
+                                TargetTypes = new List<Card.Type> { Card.Type.Cool },
+                                TargetBands = new List<Card.Band>(),
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (10, 10, 10), (30, 30, 30), (50, 50, 50), (70, 70, 70), (100, 100, 100), (120, 120, 120) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "マカロンタワー",
+                                TargetTypes = new List<Card.Type> { Card.Type.Happy },
+                                TargetBands = new List<Card.Band>(),
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (10, 10, 10), (30, 30, 30), (50, 50, 50), (70, 70, 70), (100, 100, 100), (120, 120, 120) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "フルーツタルト",
+                                TargetTypes = new List<Card.Type> { Card.Type.Powerful },
+                                TargetBands = new List<Card.Band>(),
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (10, 10, 10), (30, 30, 30), (50, 50, 50), (70, 70, 70), (100, 100, 100), (120, 120, 120) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "チョココロネ",
+                                TargetTypes = new List<Card.Type> { Card.Type.Cool, Card.Type.Happy, Card.Type.Powerful, Card.Type.Pure },
+                                TargetBands = new List<Card.Band>(),
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (5, 5, 5), (10, 10, 10), (15, 15, 15), (20, 20, 20), (25, 25, 25) },
+                                Level = 0,
+                            },
+                            new Okimono {
+                                Name = "極上コーヒー",
+                                TargetTypes = new List<Card.Type> { Card.Type.Cool, Card.Type.Happy, Card.Type.Powerful, Card.Type.Pure },
+                                TargetBands = new List<Card.Band>(),
+                                Bonus = new List<(int performance, int technique, int visual)>()
+                                    { (0, 0, 0), (5, 5, 5), (10, 10, 10), (15, 15, 15), (20, 20, 20), (25, 25, 25) },
+                                Level = 0,
+                            },
+                        },},
+                };
+
+                // 置物情報を保存する
+                File.XmlSerializer.SaveToBinaryFile(_areaDataLocal, _areaDataLocal.GetType(), _okimonoInfoPath);
+            }
+
+            // ファイルから保存情報を読み取る
+            var areaList = File.XmlSerializer.LoadFromBinaryFile(typeof(List<OkimonoArea>), _okimonoInfoPath) as IEnumerable<OkimonoArea>;
+
+            if (areaList != null)
+                _areas = new List<OkimonoArea>(areaList);
+            else
+            {
+                System.Windows.MessageBox.Show(
+                    "置物情報が保存されていません.",
+                    "置物設定未保存");
+                _areas = new List<OkimonoArea>();
             }
         }
 
@@ -117,7 +570,33 @@ namespace GarupaSimulator.ViewModels
 
         #endregion
 
+        #region ViewModel override
+
+        /// <summary>
+        /// メインビューを閉じる時に実行する
+        /// </summary>
+        public override void ClosedView(ClosedViewArgs arg)
+        {
+            this.CloseViewCommandImplement(arg);
+            base.ClosedView(arg);
+        }
+
+        #endregion
+
         #region コマンド
+
+        private ICommand okimonoCommand;
+        public ICommand OkimonoCommand => okimonoCommand ?? (okimonoCommand = new DelegateCommand(ShowOkimonoView, null));
+
+        /// <summary>
+        /// 置物設定ビューをモーダレスで開く
+        /// </summary>
+        private void ShowOkimonoView(object o)
+        {
+            // モーダレスで設定ウィンドウ表示
+            var vm = new ViewModels.OkimonoViewModel(_areas);
+            App.ViewManager.ShowModelessView<Views.OkimonoWindow>(vm, this);
+        }
 
         /// <summary>
         /// カード情報更新
@@ -377,6 +856,28 @@ namespace GarupaSimulator.ViewModels
                 _cards = value;
                 this.NotifyPropertyChanged(nameof(Cards));
             }
+        }
+
+        /// <summary>
+        /// エリア情報 置物情報
+        /// </summary>
+        /// <remarks>
+        ///     エリア情報が置物情報を含んでいる
+        ///     置物ビューのビューモデルへ渡す
+        /// </remarks>
+        private List<OkimonoArea> _areas;
+
+
+        /// <summary>
+        /// メインビューを閉じる時に実行する
+        /// </summary>
+        /// <remarks>CloseViewCommandをバインディングした際に呼ばれる</remarks>
+        protected override void CloseViewCommandImplement(object o)
+        {
+            // 置物情報を保存する
+            File.XmlSerializer.SaveToBinaryFile(_areas, _areas.GetType(), _okimonoInfoPath);
+
+            base.CloseViewCommandImplement(o);
         }
 
         #endregion

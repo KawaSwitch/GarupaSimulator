@@ -48,6 +48,44 @@ namespace GarupaSimulator.Converters
     }
 
     /// <summary>
+    /// リソース画像のコンバータ
+    /// </summary>
+    [ValueConversion(typeof(string), typeof(System.Windows.Media.ImageSource))]
+    public class ResourceImageConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            try
+            {
+                var path = (string)value;
+                return new BitmapImage(new Uri(path, UriKind.Relative));
+
+                //using (var fs = new FileStream(path, FileMode.Open))
+                //{
+                //    // 画像表示中にファイルをロックしないように画像をメモリにキャッシュする
+                //    var decoder = BitmapDecoder.Create(
+                //        fs,
+                //        BitmapCreateOptions.None,
+                //        BitmapCacheOption.OnLoad);
+
+                //    var bmp = new WriteableBitmap(decoder.Frames[0]);
+                //    bmp.Freeze();
+                //    return bmp;
+                //}
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    /// <summary>
     /// カード属性のコンバータ
     /// </summary>
     [ValueConversion(typeof(Card.Type), typeof(string))]

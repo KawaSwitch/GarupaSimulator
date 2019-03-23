@@ -1,0 +1,126 @@
+﻿<Window x:Class="GarupaSimulator.Views.OkimonoWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GarupaSimulator.Views"
+        xmlns:vm="clr-namespace:GarupaSimulator.ViewModels"
+        xmlns:cv="clr-namespace:GarupaSimulator.Converters"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance vm:OkimonoViewModel, IsDesignTimeCreatable=True}"
+        Title="OkimonoWindow" Height="600" Width="800">
+    <Grid>
+
+        <Grid.ColumnDefinitions>
+
+            <ColumnDefinition Width="250" />
+            <ColumnDefinition Width="*" />
+
+        </Grid.ColumnDefinitions>
+
+        <!-- エリア選択 -->
+        <ListView x:Name="listViewOkimonoAreas" Grid.Column="0"
+                Background="AliceBlue"
+                SelectedIndex="0"
+                ScrollViewer.CanContentScroll="False"
+                IsSynchronizedWithCurrentItem="True"
+                ItemsSource="{Binding Areas}">
+            <ListView.Resources>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="FontSize" Value="15"/>
+                </Style>
+                <Style TargetType="GridViewColumnHeader">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </Style>
+            </ListView.Resources>
+
+            <ListView.View>
+                <GridView>
+                    <!-- アイコン -->
+                    <GridViewColumn>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image 
+                                    Source="{Binding ImageUri}"
+                                    Width="100" Height="100"
+                                    RenderOptions.BitmapScalingMode="Unspecified"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <!-- エリア名 -->
+                    <GridViewColumn DisplayMemberBinding="{Binding Name}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock TextWrapping="Wrap" Text="{Binding}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+
+        </ListView>
+
+        <!-- 置物選択 -->
+        <ListView x:Name="listViewOkimonos" Grid.Column="1"
+                  Background="AliceBlue"
+                  SelectedIndex="0"
+                  ScrollViewer.CanContentScroll="False"
+                  ItemsSource="{Binding Areas/AreaItems}"
+                  SelectionChanged="ListViewOkimonos_SelectionChanged">
+            <ListView.Resources>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="FontSize" Value="15"/>
+                </Style>
+                <Style TargetType="GridViewColumnHeader">
+                    <Setter Property="Visibility" Value="Collapsed" />
+                </Style>
+
+                <cv:CardTypeConverter x:Key="CardTypeConverter" />
+                <cv:BandTypeConverter x:Key="BandTypeConverter" />
+            </ListView.Resources>
+
+            <ListView.View>
+                <GridView>
+                    <!-- アイコン -->
+                    <GridViewColumn>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image 
+                                        Source="{Binding ImageUri}"
+                                        Width="80" Height="80"
+                                        RenderOptions.BitmapScalingMode="Unspecified"/>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <!-- エリア名 -->
+                    <GridViewColumn DisplayMemberBinding="{Binding Name}">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBlock TextWrapping="Wrap" Text="{Binding}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+
+                    <!-- レベル -->
+                    <GridViewColumn>
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <StackPanel Orientation="Horizontal">
+                                    <Label Content="Lv. " />
+                                    <TextBox Name="okimonoLevel" VerticalAlignment="Center"
+                                           TextWrapping="Wrap" Text="{Binding Level}" />
+                                </StackPanel>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    
+                    <!-- 補正値メッセージ -->
+                    <GridViewColumn DisplayMemberBinding="{Binding BonusMessage}" />
+
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Window>

@@ -10,14 +10,14 @@ namespace GarupaSimulator
     /// 各種カード情報
     /// </summary>
     [Serializable()]
-    internal class Card
+    public class Card
     {
         #region Enum definitions
 
         /// <summary>
         /// カード属性
         /// </summary>
-        internal enum Type
+        public enum Type
         {
             /// <summary>
             /// パワフル
@@ -47,7 +47,7 @@ namespace GarupaSimulator
         /// <summary>
         /// 所属バンド
         /// </summary>
-        internal enum Band
+        public enum Band
         {
             /// <summary>
             /// Poppin'Party

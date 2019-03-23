@@ -60,14 +60,16 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <ApplicationDefinition Include="App.xaml">
+    <Page Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
-    </ApplicationDefinition>
+    </Page>
     <Compile Include="Converters\BangDreamConverter.cs" />
+    <Compile Include="Extensions\DispatcherExtension.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\StringExtension.cs" />
     <Compile Include="File.cs" />
+    <Compile Include="Okimono.cs" />
     <Compile Include="Properties\BangDreamResources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -85,10 +87,16 @@
     <Compile Include="Util\Localize.cs" />
     <Compile Include="Util\RegexUtil.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
+    <Compile Include="ViewModels\OkimonoViewModel.cs" />
+    <Compile Include="Views\OkimonoWindow.xaml.cs">
+      <DependentUpon>OkimonoWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WpfUtil\EventArgs\CloseViewEventArgs.cs" />
     <Compile Include="WpfUtil\DelegateCommand.cs" />
     <Compile Include="WpfUtil\DispatcherExtension.cs" />
     <Compile Include="WpfUtil\EventArgs\ShowMessageBoxEventArgs.cs" />
+    <Compile Include="WpfUtil\ModelBase.cs" />
+    <Compile Include="WpfUtil\ViewManager.cs" />
     <Compile Include="WpfUtil\ViewModelBase.cs" />
     <Compile Include="WpfUtil\WindowExtension.cs" />
     <Compile Include="WpfUtil\XamlDebug.cs" />
@@ -104,6 +112,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\OkimonoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -144,6 +156,59 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Styles\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\okimonoIcons\Afterglowのフライヤー.png" />
+    <Resource Include="Resources\okimonoIcons\Afterglowのポスター.png" />
+    <Resource Include="Resources\okimonoIcons\Roseliaのフライヤー.png" />
+    <Resource Include="Resources\okimonoIcons\Roseliaのポスター.png" />
+    <Resource Include="Resources\okimonoIcons\あこのドラム.png" />
+    <Resource Include="Resources\okimonoIcons\たえのギター.png" />
+    <Resource Include="Resources\okimonoIcons\つぐみのキーボード.png" />
+    <Resource Include="Resources\okimonoIcons\はぐみのベース.png" />
+    <Resource Include="Resources\okimonoIcons\ひまりのベース.png" />
+    <Resource Include="Resources\okimonoIcons\りみのベース.png" />
+    <Resource Include="Resources\okimonoIcons\アイドルマイク.png" />
+    <Resource Include="Resources\okimonoIcons\アサイーボウル.png" />
+    <Resource Include="Resources\okimonoIcons\イヴのキーボード.png" />
+    <Resource Include="Resources\okimonoIcons\スタジオマイク.png" />
+    <Resource Include="Resources\okimonoIcons\チョココロネ.png" />
+    <Resource Include="Resources\okimonoIcons\ハロハピのフライヤー.png" />
+    <Resource Include="Resources\okimonoIcons\ハロハピのポスター.png" />
+    <Resource Include="Resources\okimonoIcons\パスパレのフライヤー.png" />
+    <Resource Include="Resources\okimonoIcons\パスパレのポスター.png" />
+    <Resource Include="Resources\okimonoIcons\フルーツタルト.png" />
+    <Resource Include="Resources\okimonoIcons\ポピパのフライヤー.png" />
+    <Resource Include="Resources\okimonoIcons\ポピパのポスター.png" />
+    <Resource Include="Resources\okimonoIcons\マカロンタワー.png" />
+    <Resource Include="Resources\okimonoIcons\マーチングマイク.png" />
+    <Resource Include="Resources\okimonoIcons\ミッシェルの銅像.png" />
+    <Resource Include="Resources\okimonoIcons\ミートソースパスタ.png" />
+    <Resource Include="Resources\okimonoIcons\モカのギター.png" />
+    <Resource Include="Resources\okimonoIcons\ヤシの木.png" />
+    <Resource Include="Resources\okimonoIcons\リサのベース.png" />
+    <Resource Include="Resources\okimonoIcons\ロックマイク.png" />
+    <Resource Include="Resources\okimonoIcons\千聖のベース.png" />
+    <Resource Include="Resources\okimonoIcons\噴水.png" />
+    <Resource Include="Resources\okimonoIcons\巴のドラム.png" />
+    <Resource Include="Resources\okimonoIcons\日菜のギター.png" />
+    <Resource Include="Resources\okimonoIcons\有咲のキーボード.png" />
+    <Resource Include="Resources\okimonoIcons\沙綾のドラム.png" />
+    <Resource Include="Resources\okimonoIcons\燐子のキーボード.png" />
+    <Resource Include="Resources\okimonoIcons\盆栽セット.png" />
+    <Resource Include="Resources\okimonoIcons\紗夜のギター.png" />
+    <Resource Include="Resources\okimonoIcons\美咲のDJセット.png" />
+    <Resource Include="Resources\okimonoIcons\花音のドラム.png" />
+    <Resource Include="Resources\okimonoIcons\薫のギター.png" />
+    <Resource Include="Resources\okimonoIcons\足湯.png" />
+    <Resource Include="Resources\okimonoIcons\青薔薇のマイク.png" />
+    <Resource Include="Resources\okimonoIcons\麻弥のドラム.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\OkimonoAreaIcons\CiRCLE.png" />
+    <Resource Include="Resources\OkimonoAreaIcons\カフェテリア.png" />
+    <Resource Include="Resources\OkimonoAreaIcons\江戸川楽器店.png" />
+    <Resource Include="Resources\OkimonoAreaIcons\流星堂.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

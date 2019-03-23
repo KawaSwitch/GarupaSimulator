@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GarupaSimulator.WpfUtil;
 
 namespace GarupaSimulator.Views
 {
@@ -22,6 +23,7 @@ namespace GarupaSimulator.Views
     {
         public MainWindow()
         {
+            this.Setup();
             InitializeComponent();
 
             this.DataContext = new ViewModels.MainViewModel(this);
