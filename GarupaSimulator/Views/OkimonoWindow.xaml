@@ -115,12 +115,16 @@
                                                     <!--NOTE: グルーピング結果には分割結果のCollectionViewGroupがバインドされている-->
                                                     <TextBlock Text="{Binding Name}" Margin="5 0 0 0" 
                                                                FontSize="15" FontWeight="Bold" Foreground="RoyalBlue"/>
+                                                    
                                                     <!-- グループ内の置物全てのレベルを最小化 -->
-                                                    <Button Margin="5 0 0 0" Width="20" Background="#AA5522EE"
-                                                        Command="{Binding Data.SetAllLevelMin, Source={StaticResource proxy}}" CommandParameter="{Binding Items}" />
+                                                    <Button Style="{StaticResource bulkLevelButtonStyle}"
+                                                            Margin="5 0 0 0" Content=" All min " Foreground="White" Background="#AA5522EE"
+                                                            Command="{Binding Data.SetAllLevelMin, Source={StaticResource proxy}}" CommandParameter="{Binding Items}" />
+
                                                     <!-- グループ内の置物全てのレベルを最大化 -->
-                                                    <Button Margin="5 0 0 0" Width="20" Background="#AAEE2255"
-                                                        Command="{Binding Data.SetAllLevelMax, Source={StaticResource proxy}}" CommandParameter="{Binding Items}" />
+                                                    <Button Style="{StaticResource bulkLevelButtonStyle}"
+                                                            Margin="5 0 0 0" Content=" All MAX " Foreground="White" Background="#AAEE2255"
+                                                            Command="{Binding Data.SetAllLevelMax, Source={StaticResource proxy}}" CommandParameter="{Binding Items}" />
                                                 </DockPanel>
                                             </Expander.Header>
                                             <Expander.Content>

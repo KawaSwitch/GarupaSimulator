@@ -102,6 +102,10 @@
     <Compile Include="WpfUtil\ViewModelBase.cs" />
     <Compile Include="WpfUtil\WindowExtension.cs" />
     <Compile Include="WpfUtil\XamlDebug.cs" />
+    <Page Include="Styles\StyleButtons.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -156,9 +160,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Styles\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Resource Include="Resources\okimonoIcons\Afterglowのフライヤー.png" />
     <Resource Include="Resources\okimonoIcons\Afterglowのポスター.png" />
