@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:GarupaSimulator.Views"
         xmlns:vm="clr-namespace:GarupaSimulator.ViewModels"
         xmlns:cv="clr-namespace:GarupaSimulator.Converters"
+        xmlns:util="clr-namespace:GarupaSimulator.WpfUtil"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance vm:OkimonoViewModel, IsDesignTimeCreatable=True}"
         Title="OkimonoWindow" Height="600" Width="900">
@@ -18,6 +19,9 @@
                     <PropertyGroupDescription PropertyName="LocationName" />
                 </CollectionViewSource.GroupDescriptions>
             </CollectionViewSource>
+
+            <!-- 置物ビューのデータコンテキストプロキシ -->
+            <util:BindingProxy x:Key="proxy" Data="{Binding}" />
 
         </Grid.Resources>
 
@@ -105,6 +109,10 @@
                                                     <!--NOTE: グルーピング結果には分割結果のCollectionViewGroupがバインドされている-->
                                                     <TextBlock Text="{Binding Name}" Margin="5 0 0 0" 
                                                                FontSize="15" FontWeight="Bold" Foreground="RoyalBlue"/>
+                                                    <Button Margin="5 0 0 0" Width="20" Background="#AA5522EE"
+                                                        Command="{Binding Data.SetAllLevelMin, Source={StaticResource proxy}}" CommandParameter="{Binding Items}" />
+                                                    <Button Margin="5 0 0 0" Width="20" Background="#AAEE2255"
+                                                        Command="{Binding Data.SetAllLevelMax, Source={StaticResource proxy}}" CommandParameter="{Binding Items}" />
                                                 </DockPanel>
                                             </Expander.Header>
                                             <Expander.Content>

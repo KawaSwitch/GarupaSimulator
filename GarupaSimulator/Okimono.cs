@@ -48,6 +48,8 @@ namespace GarupaSimulator
             set
             {
                 _level = value;
+
+                this.NotifyPropertyChanged(nameof(Level));
                 this.NotifyPropertyChanged(nameof(BonusMessage)); // メッセージ更新
             }
         }

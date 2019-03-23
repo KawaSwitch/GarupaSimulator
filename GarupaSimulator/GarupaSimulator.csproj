@@ -92,6 +92,7 @@
     <Compile Include="Views\OkimonoWindow.xaml.cs">
       <DependentUpon>OkimonoWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WpfUtil\BindingProxy.cs" />
     <Compile Include="WpfUtil\EventArgs\CloseViewEventArgs.cs" />
     <Compile Include="WpfUtil\DelegateCommand.cs" />
     <Compile Include="WpfUtil\DispatcherExtension.cs" />

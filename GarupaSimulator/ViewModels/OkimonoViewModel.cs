@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Collections.ObjectModel;
+using System.Windows.Input;
 using GarupaSimulator.WpfUtil;
 
 namespace GarupaSimulator.ViewModels
@@ -48,9 +49,62 @@ namespace GarupaSimulator.ViewModels
 
         #endregion
 
+        #region コマンド
+
+        private ICommand setAllLevelMax;
+        public ICommand SetAllLevelMax => setAllLevelMax ?? (setAllLevelMax = new DelegateCommand(SetItemsLevelMax, null));
+
+        private ICommand setAllLevelMin;
+        public ICommand SetAllLevelMin => setAllLevelMin ?? (setAllLevelMin = new DelegateCommand(SetItemsLevelMin, null));
+
+        /// <summary>
+        /// 指定されたすべてのエリアアイテムのレベルを最大にする
+        /// </summary>
+        /// <param name="areaItems">エリアアイテム</param>
+        private void SetItemsLevelMax(object areaItems)
+        {
+            // NOTE: キャスト方法が分からなかったので動的に取得
+            dynamic _areaItems = areaItems;
+
+            foreach (var areaItem in _areaItems)
+            {
+                try
+                {
+                    areaItem.Level = (areaItem as Okimono).Bonus.Count - 1;
+                }
+                catch
+                {
+                    throw; // とりあえず放置
+                }
+            }
+        }
+
+        /// <summary>
+        /// 指定されたすべてのエリアアイテムのレベルを最小(0)にする
+        /// </summary>
+        /// <param name="areaItems">エリアアイテム</param>
+        private void SetItemsLevelMin(object areaItems)
+        {
+            dynamic _areaItems = areaItems;
+
+            foreach (var areaItem in _areaItems)
+            {
+                try
+                {
+                    areaItem.Level = 0;
+                }
+                catch
+                {
+                    throw; // とりあえず放置
+                }
+            }
+        }
+
+        #endregion
+
         #region バインディング用フィールド
 
-        
+
 
         /// <summary>
         /// 置物エリア情報
