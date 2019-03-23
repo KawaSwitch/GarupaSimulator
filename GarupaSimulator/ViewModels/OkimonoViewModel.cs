@@ -38,7 +38,8 @@ namespace GarupaSimulator.ViewModels
         {
             this.Areas = new ObservableCollection<OkimonoArea>()
             {
-                new OkimonoArea { Name = "江戸川楽器店", AreaItems = new List<Okimono> { new Okimono { Name = "ポピパのポスター", Bonus = new List<(int performance, int technique, int visual)>() { (20, 10, 30), (30, 20, 40), (100, 200, 300) } } } },
+                new OkimonoArea { Name = "江戸川楽器店", AreaItems = new List<Okimono> { new Okimono { Name = "ポピパのポスター", LocationName = "居酒屋",
+                   Bonus = new List<(int performance, int technique, int visual)>() { (20, 10, 30), (30, 20, 40), (100, 200, 300) } } } },
                 new OkimonoArea { Name = "CiRCLE" },
                 new OkimonoArea { Name = "流星堂" },
                 new OkimonoArea { Name = "カフェテリア" },
@@ -49,7 +50,7 @@ namespace GarupaSimulator.ViewModels
 
         #region バインディング用フィールド
 
-
+        
 
         /// <summary>
         /// 置物エリア情報

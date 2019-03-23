@@ -135,12 +135,15 @@ namespace GarupaSimulator.ViewModels
                 // 全エリアと置物情報
                 var _areaDataLocal = new List<OkimonoArea>()
                 {
+                    #region 江戸川楽器店
+
                     new OkimonoArea {
                         Name = "江戸川楽器店",
                         AreaItems = new List<Okimono> {
                             // スタジオ(マイク)
                             new Okimono {
                                 Name = "スタジオマイク",
+                                LocationName = "スタジオ(マイク)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.PoppinParty },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -149,6 +152,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "ロックマイク",
+                                LocationName = "スタジオ(マイク)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.Afterglow },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -157,6 +161,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "アイドルマイク",
+                                LocationName = "スタジオ(マイク)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.PastelPalettes },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -165,6 +170,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "青薔薇のマイク",
+                                LocationName = "スタジオ(マイク)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.Roselia },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -173,6 +179,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "マーチングマイク",
+                                LocationName = "スタジオ(マイク)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.HelloHappyWorld },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -183,6 +190,7 @@ namespace GarupaSimulator.ViewModels
                             // スタジオ(ギター)
                             new Okimono {
                                 Name = "たえのギター",
+                                LocationName = "スタジオ(ギター)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.PoppinParty },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -191,6 +199,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "モカのギター",
+                                LocationName = "スタジオ(ギター)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.Afterglow },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -199,6 +208,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "日菜のギター",
+                                LocationName = "スタジオ(ギター)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.PastelPalettes },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -207,6 +217,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "紗夜のギター",
+                                LocationName = "スタジオ(ギター)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.Roselia },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -215,6 +226,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "薫のギター",
+                                LocationName = "スタジオ(ギター)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.HelloHappyWorld },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -225,6 +237,7 @@ namespace GarupaSimulator.ViewModels
                             // スタジオ(ベース)
                             new Okimono {
                                 Name = "りみのベース",
+                                LocationName = "スタジオ(ベース)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.PoppinParty },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -233,6 +246,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "ひまりのベース",
+                                LocationName = "スタジオ(ベース)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.Afterglow },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -241,6 +255,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "千聖のベース",
+                                LocationName = "スタジオ(ベース)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.PastelPalettes },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -249,6 +264,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "リサのベース",
+                                LocationName = "スタジオ(ベース)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.Roselia },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -257,6 +273,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "はぐみのベース",
+                                LocationName = "スタジオ(ベース)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.HelloHappyWorld },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -267,6 +284,7 @@ namespace GarupaSimulator.ViewModels
                             // スタジオ(ドラム)
                             new Okimono {
                                 Name = "沙綾のドラム",
+                                LocationName = "スタジオ(ドラム)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.PoppinParty },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -275,6 +293,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "巴のドラム",
+                                LocationName = "スタジオ(ドラム)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.Afterglow },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -283,6 +302,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "麻弥のドラム",
+                                LocationName = "スタジオ(ドラム)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.PastelPalettes },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -291,6 +311,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "あこのドラム",
+                                LocationName = "スタジオ(ドラム)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.Roselia },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -299,6 +320,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "花音のドラム",
+                                LocationName = "スタジオ(ドラム)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.HelloHappyWorld },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -309,6 +331,7 @@ namespace GarupaSimulator.ViewModels
                             // スタジオ(その他)
                             new Okimono {
                                 Name = "有咲のキーボード",
+                                LocationName = "スタジオ(その他)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.PoppinParty },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -317,6 +340,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "つぐみのキーボード",
+                                LocationName = "スタジオ(その他)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.Afterglow },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -325,6 +349,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "イヴのキーボード",
+                                LocationName = "スタジオ(その他)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.PastelPalettes },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -333,6 +358,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "燐子のキーボード",
+                                LocationName = "スタジオ(その他)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.Roselia },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -341,6 +367,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "美咲のDJセット",
+                                LocationName = "スタジオ(その他)",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.HelloHappyWorld },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -349,11 +376,17 @@ namespace GarupaSimulator.ViewModels
                             },
                         }
                     },
+
+                    #endregion
+
+                    #region CiRCLE
+
                     new OkimonoArea { Name = "CiRCLE",
                         AreaItems = new List<Okimono> {
                             // ポスター
                             new Okimono {
                                 Name = "ポピパのポスター",
+                                 LocationName = "ポスター",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.PoppinParty },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -362,6 +395,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "Afterglowのポスター",
+                                 LocationName = "ポスター",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.Afterglow },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -370,6 +404,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "パスパレのポスター",
+                                 LocationName = "ポスター",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.PastelPalettes },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -378,6 +413,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "Roseliaのポスター",
+                                 LocationName = "ポスター",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.Roselia },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -386,6 +422,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "ハロハピのポスター",
+                                 LocationName = "ポスター",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.HelloHappyWorld },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -396,6 +433,7 @@ namespace GarupaSimulator.ViewModels
                             // フライヤー
                             new Okimono {
                                 Name = "ポピパのフライヤー",
+                                 LocationName = "フライヤー",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.PoppinParty },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -404,6 +442,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "Afterglowのフライヤー",
+                                 LocationName = "フライヤー",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.Afterglow },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -412,6 +451,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "パスパレのフライヤー",
+                                 LocationName = "フライヤー",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.PastelPalettes },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -420,6 +460,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "Roseliaのフライヤー",
+                                 LocationName = "フライヤー",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.Roselia },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -428,6 +469,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "ハロハピのフライヤー",
+                                 LocationName = "フライヤー",
                                 TargetTypes = new List<Card.Type>(),
                                 TargetBands = new List<Card.Band>{ Card.Band.HelloHappyWorld },
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -436,11 +478,17 @@ namespace GarupaSimulator.ViewModels
                             },
                         },
                     },
+
+                    #endregion
+
+                    #region 流星堂
+
                     new OkimonoArea { Name = "流星堂",
                         AreaItems = new List<Okimono> {
                             // センタースペース
                             new Okimono {
                                 Name = "噴水",
+                                 LocationName = "センタースペース",
                                 TargetTypes = new List<Card.Type> { Card.Type.Pure },
                                 TargetBands = new List<Card.Band>(),
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -449,6 +497,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "足湯",
+                                 LocationName = "センタースペース",
                                 TargetTypes = new List<Card.Type> { Card.Type.Cool },
                                 TargetBands = new List<Card.Band>(),
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -457,6 +506,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "ミッシェルの銅像",
+                                 LocationName = "センタースペース",
                                 TargetTypes = new List<Card.Type> { Card.Type.Happy },
                                 TargetBands = new List<Card.Band>(),
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -465,6 +515,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "ヤシの木",
+                                 LocationName = "センタースペース",
                                 TargetTypes = new List<Card.Type> { Card.Type.Powerful },
                                 TargetBands = new List<Card.Band>(),
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -473,6 +524,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "盆栽セット",
+                                 LocationName = "センタースペース",
                                 TargetTypes = new List<Card.Type> { Card.Type.Cool, Card.Type.Happy, Card.Type.Powerful, Card.Type.Pure },
                                 TargetBands = new List<Card.Band>(),
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -481,11 +533,17 @@ namespace GarupaSimulator.ViewModels
                             },
                         },
                     },
+
+                    #endregion
+
+                    #region カフェテリア
+
                     new OkimonoArea { Name = "カフェテリア",
                         AreaItems = new List<Okimono> {
                             // おすすめメニュー
                             new Okimono {
                                 Name = "ミートソースパスタ",
+                                 LocationName = "おすすめメニュー",
                                 TargetTypes = new List<Card.Type> { Card.Type.Pure },
                                 TargetBands = new List<Card.Band>(),
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -494,6 +552,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "アサイーボウル",
+                                 LocationName = "おすすめメニュー",
                                 TargetTypes = new List<Card.Type> { Card.Type.Cool },
                                 TargetBands = new List<Card.Band>(),
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -502,6 +561,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "マカロンタワー",
+                                 LocationName = "おすすめメニュー",
                                 TargetTypes = new List<Card.Type> { Card.Type.Happy },
                                 TargetBands = new List<Card.Band>(),
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -510,6 +570,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "フルーツタルト",
+                                 LocationName = "おすすめメニュー",
                                 TargetTypes = new List<Card.Type> { Card.Type.Powerful },
                                 TargetBands = new List<Card.Band>(),
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -518,6 +579,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "チョココロネ",
+                                 LocationName = "おすすめメニュー",
                                 TargetTypes = new List<Card.Type> { Card.Type.Cool, Card.Type.Happy, Card.Type.Powerful, Card.Type.Pure },
                                 TargetBands = new List<Card.Band>(),
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -526,6 +588,7 @@ namespace GarupaSimulator.ViewModels
                             },
                             new Okimono {
                                 Name = "極上コーヒー",
+                                 LocationName = "おすすめメニュー",
                                 TargetTypes = new List<Card.Type> { Card.Type.Cool, Card.Type.Happy, Card.Type.Powerful, Card.Type.Pure },
                                 TargetBands = new List<Card.Band>(),
                                 Bonus = new List<(int performance, int technique, int visual)>()
@@ -533,6 +596,8 @@ namespace GarupaSimulator.ViewModels
                                 Level = 0,
                             },
                         },},
+
+                    #endregion
                 };
 
                 // 置物情報を保存する

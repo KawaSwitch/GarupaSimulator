@@ -10,6 +10,30 @@ using System.IO;
 namespace GarupaSimulator.Converters
 {
     /// <summary>
+    /// 置物の設置場所のコンバータ（グループ化用）
+    /// </summary>
+    [ValueConversion(typeof(CollectionViewGroup), typeof(string))]
+    public class LocationNameConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            try
+            {
+                return (value as Okimono).LocationName;
+            }
+            catch
+            {
+                return null;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        {
+            throw new NotImplementedException();
+        }
+    }
+
+    /// <summary>
     /// 画像のコンバータ
     /// </summary>
     [ValueConversion(typeof(string), typeof(System.Windows.Media.ImageSource))]

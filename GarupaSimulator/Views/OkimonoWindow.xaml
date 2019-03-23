@@ -8,8 +8,18 @@
         xmlns:cv="clr-namespace:GarupaSimulator.Converters"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance vm:OkimonoViewModel, IsDesignTimeCreatable=True}"
-        Title="OkimonoWindow" Height="600" Width="800">
+        Title="OkimonoWindow" Height="600" Width="900">
     <Grid>
+        <Grid.Resources>
+            
+            <!-- グループ化コレクション -->
+            <CollectionViewSource x:Key="okimonoView" Source="{Binding Areas/AreaItems}">
+                <CollectionViewSource.GroupDescriptions>
+                    <PropertyGroupDescription PropertyName="LocationName" />
+                </CollectionViewSource.GroupDescriptions>
+            </CollectionViewSource>
+            
+        </Grid.Resources>
 
         <Grid.ColumnDefinitions>
 
@@ -66,7 +76,7 @@
                   Background="AliceBlue"
                   SelectedIndex="0"
                   ScrollViewer.CanContentScroll="False"
-                  ItemsSource="{Binding Areas/AreaItems}"
+                  ItemsSource="{Binding Source={StaticResource okimonoView}}"
                   SelectionChanged="ListViewOkimonos_SelectionChanged">
             <ListView.Resources>
                 <Style TargetType="ListViewItem">
@@ -78,13 +88,26 @@
 
                 <cv:CardTypeConverter x:Key="CardTypeConverter" />
                 <cv:BandTypeConverter x:Key="BandTypeConverter" />
+                <cv:LocationNameConverter x:Key="LocationNameConverter" />
             </ListView.Resources>
 
-            <ListView.ItemContainerStyle>
-                <Style TargetType="ListViewItem">
-                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                </Style>
-            </ListView.ItemContainerStyle>
+            <!-- グルーピングのスタイル -->
+            <ListView.GroupStyle>
+                <GroupStyle>
+                    
+                    <!-- ヘッダスタイル -->
+                    <GroupStyle.HeaderTemplate>
+                        <DataTemplate>
+                            <DockPanel Background="LightBlue">
+                                <!-- NOTE: グルーピング結果には分割結果のCollectionViewGroupがバインドされている -->
+                                <TextBlock Background="Transparent"
+                                           Text="{Binding Items[0], Converter={StaticResource LocationNameConverter}}" 
+                                           Foreground="Blue" FontWeight="Bold" FontSize="15"/>
+                            </DockPanel>
+                        </DataTemplate>
+                    </GroupStyle.HeaderTemplate>
+                </GroupStyle>
+            </ListView.GroupStyle>
 
             <ListView.View>
                 <GridView>

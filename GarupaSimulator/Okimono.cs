@@ -18,6 +18,11 @@ namespace GarupaSimulator
         public string Name { get; set; }
 
         /// <summary>
+        /// 設置場所
+        /// </summary>
+        public string LocationName { get; set; }
+
+        /// <summary>
         /// 置物効果の対象カードタイプ
         /// </summary>
         public List<Card.Type> TargetTypes { get; set; }
