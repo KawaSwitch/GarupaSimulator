@@ -43,7 +43,7 @@ namespace GarupaSimulator
             set
             {
                 _level = value;
-                this.NotifyPropertyChanged(nameof(Level));
+                this.NotifyPropertyChanged(nameof(BonusMessage)); // メッセージ更新
             }
         }
 
@@ -51,6 +51,44 @@ namespace GarupaSimulator
         /// 画像パス
         /// </summary>
         public Uri ImageUri { get { return new Uri(@"pack://application:,,,/Resources/OkimonoIcons/" + this.Name + ".png"); } }
+
+        #region for Binding getter
+
+        /// <summary>
+        /// 置物の可能レベル（バインディング用）
+        /// </summary>
+        public IEnumerable<int> Levels { get { return Enumerable.Range(0, this.Bonus.Count); } }
+
+        /// <summary>
+        /// 置物メッセージ（バインディング用）
+        /// </summary>
+        public string BonusMessage { get { return this.CreateBonusMessage(); } }
+
+        #endregion
+
+        #region Private Helper
+
+        /// <summary>
+        /// 置物の補正値メッセージを作成する
+        /// </summary>
+        private string CreateBonusMessage()
+        {
+            string msg = "";
+
+            foreach (var targetType in this.TargetTypes)
+                msg += Util.EnumUtil.GetDescription(targetType) + " ";
+            foreach (var targetBand in this.TargetBands)
+                msg += Util.EnumUtil.GetDescription(targetBand) + " ";
+
+            msg += "の";
+
+            // 簡易 あとでパラメータ補正がばらばらな置物が追加されたら変更する
+            msg += "全パラメータ" + this.Bonus[this.Level].performance / 10 + "% UP";
+
+            return msg;
+        }
+
+        #endregion
     }
 
     /// <summary>

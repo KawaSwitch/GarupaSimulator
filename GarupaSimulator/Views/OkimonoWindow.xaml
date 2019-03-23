@@ -80,6 +80,12 @@
                 <cv:BandTypeConverter x:Key="BandTypeConverter" />
             </ListView.Resources>
 
+            <ListView.ItemContainerStyle>
+                <Style TargetType="ListViewItem">
+                    <Setter Property="HorizontalContentAlignment" Value="Stretch" />
+                </Style>
+            </ListView.ItemContainerStyle>
+
             <ListView.View>
                 <GridView>
                     <!-- アイコン -->
@@ -109,8 +115,7 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal">
                                     <Label Content="Lv. " />
-                                    <TextBox Name="okimonoLevel" VerticalAlignment="Center"
-                                           TextWrapping="Wrap" Text="{Binding Level}" />
+                                    <ComboBox ItemsSource="{Binding Levels}" SelectedIndex="{Binding Level}" />
                                 </StackPanel>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
