@@ -18,7 +18,104 @@
 
         </Grid.RowDefinitions>
 
-        <StackPanel Grid.Row="0" Orientation="Horizontal" Margin="3 3">
+        <!-- 編成結果 -->
+        <Border BorderBrush="Black" BorderThickness="1" Background="#AAFFFFFF" Margin="10" CornerRadius="2">
+            <StackPanel Orientation="Vertical">
+                
+                <StackPanel Orientation="Horizontal">
+                    
+                    <!-- 編成 -->
+                    <ItemsControl ItemsSource="{Binding TeamCards}" Margin="10" AlternationCount="10">
+                        <ItemsControl.Resources>
+                            <BitmapImage x:Key="LeaderFrame" UriSource="../Resources/Interfaces/LeaderFrame.png" />
+                            <cv:ImageConverter x:Key="ImageConverter" />
+                        </ItemsControl.Resources>
+
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <Grid Margin="-5 0">
+                                    <Image Width="110" Height="110"
+                                            Source="{Binding IconBeforePath, Converter={StaticResource ImageConverter}}" ToolTip="{Binding Name}" />
+                                    <Image Name="leaderFrameImage" Width="125" Height="125" Margin="0 0 0 10">
+                                    </Image>
+                                </Grid>
+
+                                <!-- リーダー枠（インデックス2が中心） AlternationCountはとりあえず余裕をもって10 -->
+                                <DataTemplate.Triggers>
+                                    <Trigger Property="ItemsControl.AlternationIndex" Value="2">
+                                        <Setter TargetName="leaderFrameImage" Property="Source" Value="{StaticResource LeaderFrame}" />
+                                    </Trigger>
+                                </DataTemplate.Triggers>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+
+                        <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                                <StackPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                        </ItemsControl.ItemsPanel>
+                    </ItemsControl>
+
+                    <!-- ライフ / 総合力 -->
+                    <Grid Width="150">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+                        
+                        <Grid.Resources>
+                            <BitmapImage x:Key="HeartIcon" UriSource="../Resources/Interfaces/heartMark.png" />
+                            <BitmapImage x:Key="GuitarIcon" UriSource="../Resources/Interfaces/guitarMark.png" />
+
+                            <Color x:Key="Green">#32B16C</Color>
+                            <Color x:Key="Pink">#FF3B72</Color>
+                            <SolidColorBrush x:Key="LifeBrush" Color="{DynamicResource Green}" />
+                            <SolidColorBrush x:Key="BandPowerBrush" Color="{DynamicResource Pink}" />
+
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontSize" Value="19" />
+                                <Setter Property="FontWeight" Value="Bold" />
+                                <Setter Property="VerticalAlignment" Value="Center" />
+                            </Style>
+                        </Grid.Resources>
+                        
+                        <!-- ライフ -->
+                        <Grid  Grid.Row="0" Margin="0 30 0 0">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Image Grid.Column="0" Width="30" Height="30" Source="{StaticResource HeartIcon}" />
+                            <TextBlock Grid.Column="1" Text="ライフ" Margin="5 0" Foreground="{StaticResource LifeBrush}" />
+                            <TextBlock Grid.Column="2" Text="{Binding Life}" HorizontalAlignment="Right"
+                                        Foreground="{StaticResource LifeBrush}" />
+                        </Grid>
+                        <!-- 総合力 -->
+                        <Grid Grid.Row="1" Margin="0 0 0 30">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto" />
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+
+                            <Image Grid.Column="0" Width="30" Height="30" Source="{StaticResource GuitarIcon}" />
+                            <TextBlock Grid.Column="1" Text="総合力" Margin="5 0" Foreground="{StaticResource BandPowerBrush}" />
+                            <TextBlock Grid.Column="2" Text="{Binding BandPower}" 
+                                        Foreground="{StaticResource BandPowerBrush}"  />
+                        </Grid>
+                    </Grid>
+
+                </StackPanel>
+                
+                <!-- test -->
+                <Button Content="編成" Width="40" Height="40" Command="{Binding TeamUpCommand}" />
+            </StackPanel>
+        </Border>
+        
+        <!-- 条件 -->
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Margin="3 3">
 
             <StackPanel.Resources>
                 <BitmapImage x:Key="InfoIcon" UriSource="../Resources/Interfaces/InfoIcon.png" />
@@ -45,8 +142,8 @@
                            AllowsTransparency="True" StaysOpen="False">
                         <!-- 選択されたイベントの詳細 -->
                         <Border BorderThickness="1" BorderBrush="Blue" Background="#AABBEEDD"
-                    CornerRadius="3" Padding="1" VerticalAlignment="Top"
-                    Visibility="{Binding SelectedIndex, ElementName=eventComboBox, Converter={StaticResource IntegerToVisiblityConverter}}">
+                            CornerRadius="3" Padding="1" VerticalAlignment="Top"
+                            Visibility="{Binding SelectedIndex, ElementName=eventComboBox, Converter={StaticResource IntegerToVisiblityConverter}}">
                             <StackPanel Orientation="Horizontal" Margin="5 5">
 
                                 <StackPanel.Resources>
@@ -78,7 +175,7 @@
                                             <DataTemplate>
                                                 <StackPanel Orientation="Vertical" Margin="1 1">
                                                     <Image Width="50" Height="50"
-                                            Source="{Binding ImageUri}" ToolTip="{Binding Name}" />
+                                                        Source="{Binding ImageUri}" ToolTip="{Binding Name}" />
                                                     <TextBlock Text="{Binding Bonus}" Foreground="Red" FontSize="16" HorizontalAlignment="Center" />
                                                 </StackPanel>
                                             </DataTemplate>
@@ -100,13 +197,13 @@
                                             <cv:AttributeImageConverter x:Key="AttributeImageConverter" />
                                         </StackPanel.Resources>
                                         <Image Width="30" Height="30"
-                                   Source="{Binding SelectedItem.BoostType, ElementName=eventComboBox, Converter={StaticResource AttributeImageConverter}}" />
+                                            Source="{Binding SelectedItem.BoostType, ElementName=eventComboBox, Converter={StaticResource AttributeImageConverter}}" />
                                         <TextBlock Text="{Binding SelectedItem.BoostType, ElementName=eventComboBox,
-                                       Converter={StaticResource AttributeConverter}, StringFormat={}{0}タイプ}"
-                                       Margin="5 0 5 0"
-                                       VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#FF042271" FontSize="16" />
+                                            Converter={StaticResource AttributeConverter}, StringFormat={}{0}タイプ}"
+                                            Margin="5 0 5 0"
+                                            VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#FF042271" FontSize="16" />
                                         <TextBlock Text="{Binding SelectedItem.BoostTypeBonus, ElementName=eventComboBox, StringFormat={}{0}%}"
-                                       VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Red" FontSize="16" />
+                                            VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Red" FontSize="16" />
                                     </StackPanel>
                                 </StackPanel>
 
@@ -125,17 +222,17 @@
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="パフォーマンスボーナス" />
                                         <TextBlock Foreground="Red"
-                                Text="{Binding SelectedItem.PerformanceBonus, ElementName=eventComboBox, StringFormat={} {0}%}" />
+                                            Text="{Binding SelectedItem.PerformanceBonus, ElementName=eventComboBox, StringFormat={} {0}%}" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="テクニックボーナス" />
                                         <TextBlock Foreground="Red"
-                                Text="{Binding SelectedItem.TechniqueBonus, ElementName=eventComboBox, StringFormat={} {0}%}" />
+                                            Text="{Binding SelectedItem.TechniqueBonus, ElementName=eventComboBox, StringFormat={} {0}%}" />
                                     </StackPanel>
                                     <StackPanel Orientation="Horizontal">
                                         <TextBlock Text="ビジュアルボーナス" />
                                         <TextBlock Foreground="Red"
-                                Text="{Binding SelectedItem.VisualBonus, ElementName=eventComboBox, StringFormat={} {0}%}" />
+                                            Text="{Binding SelectedItem.VisualBonus, ElementName=eventComboBox, StringFormat={} {0}%}" />
                                     </StackPanel>
 
                                     <!-- 開催期間 -->

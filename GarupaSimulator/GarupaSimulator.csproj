@@ -261,5 +261,15 @@
   <ItemGroup>
     <Resource Include="Resources\Interfaces\InfoIcon.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Interfaces\unknown_image.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Interfaces\guitarMark.png" />
+    <Resource Include="Resources\Interfaces\heartMark.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Interfaces\LeaderFrame.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -39,12 +39,17 @@ namespace GarupaSimulator.Converters
     [ValueConversion(typeof(string), typeof(System.Windows.Media.ImageSource))]
     public class ImageConverter : IValueConverter
     {
+        string _unknownPath = @"pack://application:,,,/Resources/Interfaces/unknown_image.png";
+
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             try
             {
                 // 絶対パスを取得（WPFのImageSourceらへんは相対パスがややこしい）
                 var path = Path.GetFullPath((string)value);
+
+                if (!System.IO.File.Exists(path))
+                    path = @"pack://application:,,,/Resources/Interfaces/unknown_image.png";
 
                 using (var fs = new FileStream(path, FileMode.Open))
                 {
@@ -61,7 +66,7 @@ namespace GarupaSimulator.Converters
             }
             catch
             {
-                return null;
+                return new Uri(_unknownPath);
             }
         }
 

@@ -110,9 +110,15 @@ namespace GarupaSimulator.ViewModels
         /// <param name="eventInfo">イベント情報</param>
         private void TeamUpOptimally(object eventInfo)
         {
-            // TODO: 
+            // TODO: 各イベントごとの最適編成
 
-            this.TeamCards = null;
+            // イベント外通常編成
+
+
+
+            this.TeamCards = new ObservableCollection<Card>(_cards.Take(5));
+            this.Life = this.Life;
+            this.BandPower = this.TeamCards.Sum(card => card.MaxTotal);
         }
 
         // 詳細パネル表示
@@ -153,7 +159,11 @@ namespace GarupaSimulator.ViewModels
         /// <summary>
         /// 編成情報
         /// </summary>
-        private ObservableCollection<Card> _teamCards;
+        private ObservableCollection<Card> _teamCards = new ObservableCollection<Card>
+        {
+            // 5枚の空カードを初期値とする
+            new Card(), new Card(), new Card(), new Card(), new Card(),
+        };
 
         /// <summary>
         /// 編成情報 変更通知用プロパティ
@@ -168,6 +178,42 @@ namespace GarupaSimulator.ViewModels
             {
                 _teamCards = value;
                 this.NotifyPropertyChanged(nameof(TeamCards));
+            }
+        }
+
+        /// <summary>
+        /// ライフ
+        /// </summary>
+        private int _life = 1000;
+
+        /// <summary>
+        /// ライフ 変更通知用プロパティ
+        /// </summary>
+        public int Life
+        {
+            get { return _life; }
+            set
+            {
+                _life = value;
+                this.NotifyPropertyChanged(nameof(Life));
+            }
+        }
+
+        /// <summary>
+        /// バンド総合力 名前変えるかも...
+        /// </summary>
+        private int _bandPower = 0;
+
+        /// <summary>
+        /// バンド総合力 変更通知用プロパティ
+        /// </summary>
+        public int BandPower
+        {
+            get { return _bandPower; }
+            set
+            {
+                _bandPower = value;
+                this.NotifyPropertyChanged(nameof(BandPower));
             }
         }
 
