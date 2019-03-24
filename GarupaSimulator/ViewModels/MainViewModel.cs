@@ -646,9 +646,34 @@ namespace GarupaSimulator.ViewModels
             base.ClosedView(arg);
         }
 
+        /// <summary>
+        /// メインビューを閉じる時に実行する
+        /// </summary>
+        /// <remarks>CloseViewCommandをバインディングした際に呼ばれる</remarks>
+        protected override void CloseViewCommandImplement(object o)
+        {
+            // 置物情報を保存する
+            File.XmlSerializer.SaveToBinaryFile(_areas, _areas.GetType(), _okimonoInfoPath);
+
+            base.CloseViewCommandImplement(o);
+        }
+
         #endregion
 
         #region コマンド
+
+        private ICommand teamupCommand;
+        public ICommand TeamUpCommand => teamupCommand ?? (teamupCommand = new DelegateCommand(ShowTeamUpView, null));
+
+        /// <summary>
+        /// イベント情報から最適編成を構成する
+        /// </summary>
+        private void ShowTeamUpView(object o)
+        {
+            // モーダレスで編成ウィンドウ表示
+            var vm = new ViewModels.TeamUpViewModel(_cards.ToList(), _areas);
+            App.ViewManager.ShowModelessView<Views.TeamUpWindow>(vm, this);
+        }
 
         private ICommand okimonoCommand;
         public ICommand OkimonoCommand => okimonoCommand ?? (okimonoCommand = new DelegateCommand(ShowOkimonoView, null));
@@ -931,19 +956,6 @@ namespace GarupaSimulator.ViewModels
         ///     置物ビューのビューモデルへ渡す
         /// </remarks>
         private List<OkimonoArea> _areas;
-
-
-        /// <summary>
-        /// メインビューを閉じる時に実行する
-        /// </summary>
-        /// <remarks>CloseViewCommandをバインディングした際に呼ばれる</remarks>
-        protected override void CloseViewCommandImplement(object o)
-        {
-            // 置物情報を保存する
-            File.XmlSerializer.SaveToBinaryFile(_areas, _areas.GetType(), _okimonoInfoPath);
-
-            base.CloseViewCommandImplement(o);
-        }
 
         #endregion
     }

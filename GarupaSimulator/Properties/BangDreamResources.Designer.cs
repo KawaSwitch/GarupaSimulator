@@ -70,11 +70,38 @@ namespace GarupaSimulator.Properties {
         }
         
         /// <summary>
+        ///   Badge Event に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string BadgeEvent {
+            get {
+                return ResourceManager.GetString("BadgeEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Challenge Live Event に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string ChallengeEvent {
+            get {
+                return ResourceManager.GetString("ChallengeEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Hello, Happy World! に類似しているローカライズされた文字列を検索します。
         /// </summary>
         public static string HelloHappyWorld {
             get {
                 return ResourceManager.GetString("HelloHappyWorld", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Mission Live Event に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string MissionEvent {
+            get {
+                return ResourceManager.GetString("MissionEvent", resourceCulture);
             }
         }
         
@@ -102,6 +129,24 @@ namespace GarupaSimulator.Properties {
         public static string Roselia {
             get {
                 return ResourceManager.GetString("Roselia", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Live Goals Event に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string TryEvent {
+            get {
+                return ResourceManager.GetString("TryEvent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   VS Live Event に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        public static string VsEvent {
+            get {
+                return ResourceManager.GetString("VsEvent", resourceCulture);
             }
         }
     }

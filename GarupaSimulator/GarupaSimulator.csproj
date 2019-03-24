@@ -66,6 +66,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Compile Include="Converters\BangDreamConverter.cs" />
+    <Compile Include="Event.cs" />
     <Compile Include="Extensions\DispatcherExtension.cs" />
     <Compile Include="Extensions\IEnumerableExtensions.cs" />
     <Compile Include="Extensions\StringExtension.cs" />
@@ -89,8 +90,12 @@
     <Compile Include="Util\RegexUtil.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\OkimonoViewModel.cs" />
+    <Compile Include="ViewModels\TeamUpViewModel.cs" />
     <Compile Include="Views\OkimonoWindow.xaml.cs">
       <DependentUpon>OkimonoWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TeamUpWindow.xaml.cs">
+      <DependentUpon>TeamUpWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="WpfUtil\BindingProxy.cs" />
     <Compile Include="WpfUtil\EventArgs\CloseViewEventArgs.cs" />
@@ -119,6 +124,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\OkimonoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TeamUpWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -160,7 +169,6 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
     <Resource Include="Resources\okimonoIcons\Afterglowのフライヤー.png" />
     <Resource Include="Resources\okimonoIcons\Afterglowのポスター.png" />
@@ -216,6 +224,42 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\okimonoIcons\極上コーヒー.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\MiniIcons\上原ひまり.png" />
+    <Resource Include="Resources\MiniIcons\丸山彩.png" />
+    <Resource Include="Resources\MiniIcons\今井リサ.png" />
+    <Resource Include="Resources\MiniIcons\北沢はぐみ.png" />
+    <Resource Include="Resources\MiniIcons\大和麻弥.png" />
+    <Resource Include="Resources\MiniIcons\奥沢美咲.png" />
+    <Resource Include="Resources\MiniIcons\宇田川あこ.png" />
+    <Resource Include="Resources\MiniIcons\宇田川巴.png" />
+    <Resource Include="Resources\MiniIcons\山吹沙綾.png" />
+    <Resource Include="Resources\MiniIcons\市ヶ谷有咲.png" />
+    <Resource Include="Resources\MiniIcons\弦巻こころ.png" />
+    <Resource Include="Resources\MiniIcons\戸山香澄.png" />
+    <Resource Include="Resources\MiniIcons\松原花音.png" />
+    <Resource Include="Resources\MiniIcons\氷川日奈.png" />
+    <Resource Include="Resources\MiniIcons\氷川紗夜.png" />
+    <Resource Include="Resources\MiniIcons\湊友希那.png" />
+    <Resource Include="Resources\MiniIcons\瀬田薫.png" />
+    <Resource Include="Resources\MiniIcons\牛込りみ.png" />
+    <Resource Include="Resources\MiniIcons\白金燐子.png" />
+    <Resource Include="Resources\MiniIcons\白鷺千聖.png" />
+    <Resource Include="Resources\MiniIcons\美竹蘭.png" />
+    <Resource Include="Resources\MiniIcons\羽沢つぐみ.png" />
+    <Resource Include="Resources\MiniIcons\花園たえ.png" />
+    <Resource Include="Resources\MiniIcons\若宮イブ.png" />
+    <Resource Include="Resources\MiniIcons\青葉モカ.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\AttributeIcons\クール.png" />
+    <Resource Include="Resources\AttributeIcons\ハッピー.png" />
+    <Resource Include="Resources\AttributeIcons\パワフル.png" />
+    <Resource Include="Resources\AttributeIcons\ピュア.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\Interfaces\InfoIcon.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

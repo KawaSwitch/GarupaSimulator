@@ -120,8 +120,17 @@
   <data name="Afterglow" xml:space="preserve">
     <value>Afterglow</value>
   </data>
+  <data name="BadgeEvent" xml:space="preserve">
+    <value>バッヂイベント</value>
+  </data>
+  <data name="ChallengeEvent" xml:space="preserve">
+    <value>チャレンジライブイベント</value>
+  </data>
   <data name="HelloHappyWorld" xml:space="preserve">
     <value>ハロー、ハッピーワールド！</value>
+  </data>
+  <data name="MissionEvent" xml:space="preserve">
+    <value>ミッションライブイベント</value>
   </data>
   <data name="PastelPalettes" xml:space="preserve">
     <value>Pastel * Palettes</value>
@@ -131,5 +140,11 @@
   </data>
   <data name="Roselia" xml:space="preserve">
     <value>Roselia</value>
+  </data>
+  <data name="TryEvent" xml:space="preserve">
+    <value>ライブトライ！イベント</value>
+  </data>
+  <data name="VsEvent" xml:space="preserve">
+    <value>対バンライブイベント</value>
   </data>
 </root>

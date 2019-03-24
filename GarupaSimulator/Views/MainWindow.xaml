@@ -74,7 +74,7 @@
         </ListView>
 
         <StackPanel Grid.Row="1"  Orientation="Horizontal">
-            <Button IsEnabled="False" Content="編成" Width="80" />
+            <Button Content="編成" Width="80" Command="{Binding TeamUpCommand}" />
             <Button Content="更新" Width="80" Command="{Binding UpdateCardsCommand}" />
             <Button Content="再更新" Width="80" Command="{Binding ReUpdateCardsCommand}" />
             <Button Content="置物設定" Width="80" Command="{Binding OkimonoCommand}" />

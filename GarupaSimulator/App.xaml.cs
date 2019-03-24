@@ -39,6 +39,7 @@ namespace GarupaSimulator
 
             ViewManager.Add(typeof(ViewModels.MainViewModel), typeof(Views.MainWindow));
             ViewManager.Add(typeof(ViewModels.OkimonoViewModel), typeof(Views.OkimonoWindow));
+            ViewManager.Add(typeof(ViewModels.TeamUpViewModel), typeof(Views.TeamUpWindow));
         }
 
         /// <summary>

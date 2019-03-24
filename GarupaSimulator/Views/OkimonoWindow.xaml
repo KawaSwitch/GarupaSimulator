@@ -9,7 +9,7 @@
         xmlns:util="clr-namespace:GarupaSimulator.WpfUtil"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance vm:OkimonoViewModel, IsDesignTimeCreatable=True}"
-        Title="OkimonoWindow" Height="600" Width="900">
+        Title="置物設定" Height="600" Width="900">
     <Grid>
         <Grid.Resources>
             
