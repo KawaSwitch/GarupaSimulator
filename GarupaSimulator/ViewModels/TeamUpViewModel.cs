@@ -160,22 +160,22 @@ namespace GarupaSimulator.ViewModels
 
                         if (card.BandName == pattern.targetBand)
                         {
-                            bonusPerformance += (card.MaxPerformance + 850) * (performanceBandBonus / 100.0);
-                            bonusTechnique += (card.MaxTechnique + 850) * (techniqueBandBonus / 100.0);
-                            bonusVisual += (card.MaxVisual + 850) * (visualBandBonus / 100.0);
+                            bonusPerformance += card.MaxPerformance * (performanceBandBonus / 100.0);
+                            bonusTechnique += card.MaxTechnique * (techniqueBandBonus / 100.0);
+                            bonusVisual += card.MaxVisual * (visualBandBonus / 100.0);
                         }
                         if (card.CardType == pattern.targetAttribute)
                         {
-                            bonusPerformance += (card.MaxPerformance + 850) * ((performanceTypeBonus) / 100.0);
-                            bonusTechnique += (card.MaxTechnique + 850) * ((techniqueTypeBonus) / 100.0);
-                            bonusVisual += (card.MaxVisual + 850) * ((visualTypeBonus) / 100.0);
+                            bonusPerformance += card.MaxPerformance * (performanceTypeBonus / 100.0);
+                            bonusTechnique += card.MaxTechnique * (techniqueTypeBonus / 100.0);
+                            bonusVisual += card.MaxVisual * (visualTypeBonus / 100.0);
                         }
 
                         // 補正値込みのカード単体の総合力
                         var cardPower = (
-                            card.MaxPerformance + 850 + bonusPerformance +
-                            card.MaxTechnique + 850 + bonusTechnique +
-                            card.MaxVisual + 850 + bonusVisual);
+                            card.MaxPerformance + bonusPerformance +
+                            card.MaxTechnique + bonusTechnique +
+                            card.MaxVisual + bonusVisual);
 
                         return new
                         {

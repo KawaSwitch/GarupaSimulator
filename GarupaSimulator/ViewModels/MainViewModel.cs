@@ -51,6 +51,18 @@ namespace GarupaSimulator.ViewModels
         /// </summary>
         private string _cardIconBeforeDir = "downloadIcons";
 
+        /// <summary>
+        /// エピソード/メモリアルエピソード解放時の各ステータス上昇値
+        /// </summary>
+        /// <remarks>パフォーマンス・テクニック・ビジュアルそれぞれに等しく上昇値が上乗せされる</remarks>
+        private List<(int episode, int memorial)> _episodeRelaseStatusUp = new List<(int episode, int memorial)>
+        {
+            (100, 200), // 星1
+            (150, 300), // 星2
+            (200, 500), // 星3
+            (250, 600), // 星4
+        };
+
         #region スクレイピング情報
 
         /// <summary>
@@ -850,17 +862,21 @@ namespace GarupaSimulator.ViewModels
             var iconBeforePath =_cardIconBeforeDir + @"/" + name + "[" + title + "]" + ".png";
             this.DownloadImageAsync(url.iconUrl, iconBeforePath);
 
+            // エピソード/メモリアル解放のステータス上昇値
+            var rarity = items[1].TextContent.Count();
+            var releaseUp = _episodeRelaseStatusUp[rarity - 1].episode + _episodeRelaseStatusUp[rarity - 1].memorial;
+
             return new Card
             {
                 Name = name,
                 Title = title,
                 BandName = this.ConvertBandName(items[7].TextContent),
-                Rarity = items[1].TextContent.Count(),
+                Rarity = rarity,
                 CardType = this.ConvertCardType(items[3].TextContent),
 
-                MaxPerformance = int.Parse(items[11].TextContent),
-                MaxTechnique = int.Parse(items[13].TextContent),
-                MaxVisual = int.Parse(items[15].TextContent),
+                MaxPerformance = int.Parse(items[11].TextContent) + releaseUp,
+                MaxTechnique = int.Parse(items[13].TextContent) + releaseUp,
+                MaxVisual = int.Parse(items[15].TextContent) + releaseUp,
 
                 SkillName = items[16].TextContent,
                 SkillEffect = items[17].TextContent,
