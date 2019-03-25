@@ -29,6 +29,11 @@ namespace GarupaSimulator.ViewModels
         /// </summary>
         private string _eventInfoPath = @"eventInfo.xml";
 
+        /// <summary>
+        /// 編成メンバーの人数
+        /// </summary>
+        private static readonly int _teamMemberCount = 5;
+
         #region ctor
 
         /// <summary>
@@ -76,7 +81,7 @@ namespace GarupaSimulator.ViewModels
         #region ViewModel override
 
         /// <summary>
-        /// メインビューを閉じる時に実行する
+        /// ビューを閉じる時に実行する
         /// </summary>
         public override void ClosedView(ClosedViewArgs arg)
         {
@@ -85,7 +90,7 @@ namespace GarupaSimulator.ViewModels
         }
 
         /// <summary>
-        /// メインビューを閉じる時に実行する
+        /// ビューを閉じる時に実行する
         /// </summary>
         /// <remarks>CloseViewCommandをバインディングした際に呼ばれる</remarks>
         protected override void CloseViewCommandImplement(object o)
@@ -110,17 +115,13 @@ namespace GarupaSimulator.ViewModels
         /// <param name="eventInfo">イベント情報</param>
         private void TeamUpOptimally(object eventInfo)
         {
-            // TODO: 各イベントごとの最適編成
-
-            // フリー/イベント外 編成
-            // ただしフリーはハイスコアレーティングが高い方が最適なので後から別に考え直すかも
-
-            // 設置場所ごとに置物をグループ分け（設置場所毎に1つの置物）
-            var okimonos = _areas.Select(area => area.AreaItems).SelectMany(p => p);
-            var okimonoGroup = okimonos.GroupBy(item => item.LocationName);
-
             // キャラクターごとにグループ分け（編成は同キャラ不可）
-            var cardGroup = _cards.GroupBy(card => card.Name);
+            var cardGroups = _cards
+                .Where(card => (this.IsTeamUpWithOnlyOwned) ? card.IsOwned : true) // 所持情報使用の有無
+                .GroupBy(card => card.Name);
+
+            // 全ての置物データ
+            var okimonos = _areas.Select(area => area.AreaItems).SelectMany(p => p);
 
             // バンド/属性特化の総置物パターン(5×4=20パターン)の置物リスト
             var okimonoPatterns = new List<(IEnumerable<Okimono> okimonos, Card.Band targetBand, Card.Type targetAttribute)>();
@@ -137,7 +138,33 @@ namespace GarupaSimulator.ViewModels
                 }
             }
 
-            var optimumPattern = okimonoPatterns.Select(pattern =>
+            // TODO: 各イベントごとの最適編成
+
+            // イベント外 編成パターン
+            var optimumPattern = this.TeamUpWhenNoEvents(cardGroups, okimonoPatterns);
+            var optimumCharacters = optimumPattern.OptimumCharacters as IEnumerable<Card>;
+
+            // 最適編成結果の適用
+            {
+                var shortageCards = this.GetTeamMemberShortageCards(optimumCharacters);
+                this.TeamCards = new ObservableCollection<Card>(optimumCharacters.Concat(shortageCards));
+              
+                // TODO: 後から最適の置物追加
+
+                this.Life = this.Life;
+                this.BandPower = (int)optimumPattern.PatternPower; // NOTE: ここで整数にキャストして小数点を切り捨てるとガルパの数値と一致
+            }
+        }
+
+        /// <summary>
+        /// イベントが無いときの最適編成パターンを取得
+        /// </summary>
+        /// <remarks>バンド/属性特化の置物パターンを適用する</remarks>
+        private dynamic TeamUpWhenNoEvents(
+            IEnumerable<IGrouping<string, Card>> cardGroups,
+            List<(IEnumerable<Okimono> okimonos, Card.Band targetBand, Card.Type targetAttribute)> okimonoPatterns)
+        {
+            return okimonoPatterns.Select(pattern =>
             {
                 // 置物による3つのカードボーナスを先に計算する
                 var bandBonusOkimonoList = pattern.okimonos.Where(okimono => okimono.TargetBands.Count > 0);
@@ -151,7 +178,7 @@ namespace GarupaSimulator.ViewModels
                 var visualTypeBonus = typeBonusOkimonoList.Sum(okimono => okimono.Bonus[okimono.Level].visual) / 10.0;
 
                 // 各キャラのカードの中で置物補正込みの総合力が最も高い1枚を取り出し, その総合力が高い順に5キャラを選ぶ
-                var optimumCharacters = cardGroup.Select(group => group
+                var optimumCharacters = cardGroups.Select(group => group
                     .Select(card =>
                     {
                         var bonusPerformance = default(double);
@@ -190,23 +217,32 @@ namespace GarupaSimulator.ViewModels
 
                 return new { PatternPower = optimumCharacters.Sum(c => c.CardPower), OptimumCharacters = optimumCharacters.Select(c => c.Card), Pattern = pattern };
             })
+            //  バンド/属性特化の各パターンを適用した編成のうち一番総合力の高いパターンを取得
             .OrderByDescending(item => item.PatternPower)
             .FirstOrDefault();
-
-            // 最適編成結果
-            {
-                this.TeamCards = new ObservableCollection<Card>(optimumPattern.OptimumCharacters);
-                // TODO: 後から最適の置物追加
-
-                this.Life = this.Life;
-                this.BandPower = (int)optimumPattern.PatternPower;
-            }
         }
 
         // 詳細パネル表示
         private ICommand showDetail;
         public ICommand ShowDetailPanelCommand =>
             showDetail ?? (showDetail = new DelegateCommand((object o) => { this.IsDetailOpen = true; ; }, null));
+
+        #endregion
+
+        #region Private Helper
+
+        /// <summary>
+        /// 不足分のカードを取得する（デフォルト値）
+        /// </summary>
+        private IEnumerable<Card> GetTeamMemberShortageCards(IEnumerable<Card> optimumCharacters)
+        {
+            // 既定メンバー数(5人)に足りない分のカードを作成
+            var emptyCards = new List<Card>();
+            for (int i = 0; i < _teamMemberCount - optimumCharacters.Count(); ++i)
+                emptyCards.Add(new Card());
+
+            return emptyCards;
+        }
 
         #endregion
 
@@ -314,6 +350,24 @@ namespace GarupaSimulator.ViewModels
             {
                 _isDetailOpen = value;
                 NotifyPropertyChanged(nameof(IsDetailOpen));
+            }
+        }
+
+        /// <summary>
+        /// 所持情報使用
+        /// </summary>
+        private bool _isTeamUpWithOnlyOwned = true;
+
+        /// <summary>
+        /// 所持情報使用 変更通知用プロパティ
+        /// </summary>
+        public bool IsTeamUpWithOnlyOwned
+        {
+            get { return _isTeamUpWithOnlyOwned; }
+            set
+            {
+                _isTeamUpWithOnlyOwned = value;
+                NotifyPropertyChanged(nameof(IsTeamUpWithOnlyOwned));
             }
         }
 

@@ -154,6 +154,11 @@ namespace GarupaSimulator
         /// </summary>
         public string ImageAfterPath { get; set; }
 
+        /// <summary>
+        /// カードを所持しているか
+        /// </summary>
+        public bool IsOwned { get; set; } = false;
+
         #endregion
 
         #region for Binding getter
