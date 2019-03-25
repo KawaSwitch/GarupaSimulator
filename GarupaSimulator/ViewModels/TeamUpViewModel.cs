@@ -112,13 +112,95 @@ namespace GarupaSimulator.ViewModels
         {
             // TODO: 各イベントごとの最適編成
 
-            // イベント外通常編成
+            // フリー/イベント外 編成
+            // ただしフリーはハイスコアレーティングが高い方が最適なので後から別に考え直すかも
 
+            // 設置場所ごとに置物をグループ分け（設置場所毎に1つの置物）
+            var okimonos = _areas.Select(area => area.AreaItems).SelectMany(p => p);
+            var okimonoGroup = okimonos.GroupBy(item => item.LocationName);
 
+            // キャラクターごとにグループ分け（編成は同キャラ不可）
+            var cardGroup = _cards.GroupBy(card => card.Name);
 
-            this.TeamCards = new ObservableCollection<Card>(_cards.Take(5));
-            this.Life = this.Life;
-            this.BandPower = this.TeamCards.Sum(card => card.MaxTotal);
+            // バンド/属性特化の総置物パターン(5×4=20パターン)の置物リスト
+            var okimonoPatterns = new List<(IEnumerable<Okimono> okimonos, Card.Band targetBand, Card.Type targetAttribute)>();
+            var specialized = default(IEnumerable<Okimono>);
+            foreach (Card.Band band in Enum.GetValues(typeof(Card.Band)))
+            {
+                foreach (Card.Type attribute in Enum.GetValues(typeof(Card.Type)))
+                {
+                    specialized = okimonos.Where(okimono =>
+                        (okimono.TargetBands.Count == 1 && okimono.TargetBands.FirstOrDefault() == band) ||
+                        (okimono.TargetTypes.Count == 1 && okimono.TargetTypes.FirstOrDefault() == attribute));
+
+                    okimonoPatterns.Add((specialized, band, attribute));
+                }
+            }
+
+            var optimumPattern = okimonoPatterns.Select(pattern =>
+            {
+                // 置物による3つのカードボーナスを先に計算する
+                var bandBonusOkimonoList = pattern.okimonos.Where(okimono => okimono.TargetBands.Count > 0);
+                var performanceBandBonus = bandBonusOkimonoList.Sum(o => o.Bonus[o.Level].performance) / 10.0;
+                var techniqueBandBonus = bandBonusOkimonoList.Sum(o => o.Bonus[o.Level].technique) / 10.0;
+                var visualBandBonus = bandBonusOkimonoList.Sum(o => o.Bonus[o.Level].visual) / 10.0;
+
+                var typeBonusOkimonoList = pattern.okimonos.Where(okimono => okimono.TargetTypes.Count > 0);
+                var performanceTypeBonus = typeBonusOkimonoList.Sum(okimono => okimono.Bonus[okimono.Level].performance) / 10.0;
+                var techniqueTypeBonus = typeBonusOkimonoList.Sum(okimono => okimono.Bonus[okimono.Level].technique) / 10.0;
+                var visualTypeBonus = typeBonusOkimonoList.Sum(okimono => okimono.Bonus[okimono.Level].visual) / 10.0;
+
+                // 各キャラのカードの中で置物補正込みの総合力が最も高い1枚を取り出し, その総合力が高い順に5キャラを選ぶ
+                var optimumCharacters = cardGroup.Select(group => group
+                    .Select(card =>
+                    {
+                        var bonusPerformance = default(double);
+                        var bonusTechnique = default(double);
+                        var bonusVisual = default(double);
+
+                        if (card.BandName == pattern.targetBand)
+                        {
+                            bonusPerformance += (card.MaxPerformance + 850) * (performanceBandBonus / 100.0);
+                            bonusTechnique += (card.MaxTechnique + 850) * (techniqueBandBonus / 100.0);
+                            bonusVisual += (card.MaxVisual + 850) * (visualBandBonus / 100.0);
+                        }
+                        if (card.CardType == pattern.targetAttribute)
+                        {
+                            bonusPerformance += (card.MaxPerformance + 850) * ((performanceTypeBonus) / 100.0);
+                            bonusTechnique += (card.MaxTechnique + 850) * ((techniqueTypeBonus) / 100.0);
+                            bonusVisual += (card.MaxVisual + 850) * ((visualTypeBonus) / 100.0);
+                        }
+
+                        // 補正値込みのカード単体の総合力
+                        var cardPower = (
+                            card.MaxPerformance + 850 + bonusPerformance +
+                            card.MaxTechnique + 850 + bonusTechnique +
+                            card.MaxVisual + 850 + bonusVisual);
+
+                        return new
+                        {
+                            CardPower = cardPower,
+                            Card = card,
+                        };
+                    })
+                    .OrderByDescending(item => item.CardPower)
+                    .FirstOrDefault())
+                .OrderByDescending(item => item.CardPower)
+                .Take(5);
+
+                return new { PatternPower = optimumCharacters.Sum(c => c.CardPower), OptimumCharacters = optimumCharacters.Select(c => c.Card), Pattern = pattern };
+            })
+            .OrderByDescending(item => item.PatternPower)
+            .FirstOrDefault();
+
+            // 最適編成結果
+            {
+                this.TeamCards = new ObservableCollection<Card>(optimumPattern.OptimumCharacters);
+                // TODO: 後から最適の置物追加
+
+                this.Life = this.Life;
+                this.BandPower = (int)optimumPattern.PatternPower;
+            }
         }
 
         // 詳細パネル表示
