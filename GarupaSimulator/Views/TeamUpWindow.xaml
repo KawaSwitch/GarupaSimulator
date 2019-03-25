@@ -36,7 +36,7 @@
                                 <Grid Margin="-5 0">
                                     <Image Width="110" Height="110"
                                             Source="{Binding IconBeforePath, Converter={StaticResource ImageConverter}}" ToolTip="{Binding Name}" />
-                                    <Image Name="leaderFrameImage" Width="125" Height="125" Margin="0 0 0 10">
+                                    <Image Name="leaderFrameImage" Width="125" Height="125" Margin="0 0 0 10" IsHitTestVisible="False">
                                     </Image>
                                 </Grid>
 
