@@ -674,11 +674,23 @@ namespace GarupaSimulator.ViewModels
 
         #region コマンド
 
-        private ICommand teamupCommand;
-        public ICommand TeamUpCommand => teamupCommand ?? (teamupCommand = new DelegateCommand(ShowTeamUpView, null));
+        private ICommand saveOwnedCommand;
+        public ICommand SaveOwnedCommand => saveOwnedCommand ?? (saveOwnedCommand = new DelegateCommand(SaveOwnedInfo, null));
 
         /// <summary>
-        /// イベント情報から最適編成を構成する
+        /// 所持情報をファイルに保存する
+        /// </summary>
+        private void SaveOwnedInfo(object o)
+        {
+            // XMLファイルに上書きする
+            File.BinarySerializer.SaveToBinaryFile(this.Cards, _cardInfoPath);
+        }
+
+        private ICommand showTeamupCommand;
+        public ICommand ShowTeamUpViewCommand => showTeamupCommand ?? (showTeamupCommand = new DelegateCommand(ShowTeamUpView, null));
+
+        /// <summary>
+        /// 最適編成ビューをモーダレスで開く
         /// </summary>
         private void ShowTeamUpView(object o)
         {
@@ -687,8 +699,8 @@ namespace GarupaSimulator.ViewModels
             App.ViewManager.ShowModelessView<Views.TeamUpWindow>(vm, this);
         }
 
-        private ICommand okimonoCommand;
-        public ICommand OkimonoCommand => okimonoCommand ?? (okimonoCommand = new DelegateCommand(ShowOkimonoView, null));
+        private ICommand showOkimonoCommand;
+        public ICommand ShowOkimonoViewCommand => showOkimonoCommand ?? (showOkimonoCommand = new DelegateCommand(ShowOkimonoView, null));
 
         /// <summary>
         /// 置物設定ビューをモーダレスで開く
