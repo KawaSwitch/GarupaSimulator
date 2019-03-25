@@ -90,7 +90,7 @@ namespace GarupaSimulator
             msg += "の";
 
             // 簡易 あとでパラメータ補正がばらばらな置物が追加されたら変更する
-            msg += "全パラメータ" + this.Bonus[this.Level].performance / 10 + "% UP";
+            msg += "全パラメータ" + this.Bonus[this.Level].performance / 10.0 + "% UP";
 
             return msg;
         }
