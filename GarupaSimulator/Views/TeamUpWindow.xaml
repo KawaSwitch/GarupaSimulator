@@ -6,12 +6,21 @@
         xmlns:local="clr-namespace:GarupaSimulator.Views"
         xmlns:vm="clr-namespace:GarupaSimulator.ViewModels"
         xmlns:cv="clr-namespace:GarupaSimulator.Converters"
+        xmlns:util="clr-namespace:GarupaSimulator.WpfUtil"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         d:DataContext="{d:DesignInstance vm:TeamUpViewModel, IsDesignTimeCreatable=True}"
         Title="最適編成" Height="450" Width="820">
     <Grid Background="AliceBlue">
 
-        <Grid.RowDefinitions>
+        <Grid.Resources>
+            
+            <!-- bool型とVisiblity型のコンバータ -->
+            <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
+
+        </Grid.Resources>
+
+            <Grid.RowDefinitions>
 
             <RowDefinition Height="220" />
             <RowDefinition Height="*" />
@@ -35,9 +44,21 @@
                             <DataTemplate>
                                 <Grid Margin="-5 0">
                                     <Image Width="110" Height="110"
-                                            Source="{Binding IconBeforePath, Converter={StaticResource ImageConverter}}" ToolTip="{Binding Name}" />
-                                    <Image Name="leaderFrameImage" Width="125" Height="125" Margin="0 0 0 10" IsHitTestVisible="False">
+                                            Source="{Binding IconBeforePath, Converter={StaticResource ImageConverter}}">
+                                        <Image.ToolTip>
+                                            <ToolTip Visibility="{Binding IsValid, Converter={StaticResource boolToVisibilityConverter}}">
+                                                <TextBlock>
+                                                    <TextBlock.Text>
+                                                        <MultiBinding StringFormat="{}{0} [{1}]">
+                                                            <Binding Path="Name" />
+                                                            <Binding Path="Title" />
+                                                        </MultiBinding>
+                                                    </TextBlock.Text>
+                                                </TextBlock>
+                                            </ToolTip>
+                                        </Image.ToolTip>
                                     </Image>
+                                    <Image Name="leaderFrameImage" Width="125" Height="125" Margin="0 0 0 10" IsHitTestVisible="False" />
                                 </Grid>
 
                                 <!-- リーダー枠（インデックス2が中心） AlternationCountはとりあえず余裕をもって10 -->

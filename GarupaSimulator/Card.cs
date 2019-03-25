@@ -155,5 +155,15 @@ namespace GarupaSimulator
         public string ImageAfterPath { get; set; }
 
         #endregion
+
+        #region for Binding getter
+
+        /// <summary>
+        /// カード情報が正常であるか
+        /// </summary>
+        /// <remarks>とりあえず名前のみで判断する</remarks>
+        public bool IsValid { get { return !this.Name.IsNullOrEmpty(); } }
+
+        #endregion
     }
 }
