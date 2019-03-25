@@ -26,6 +26,9 @@
                 <Style TargetType="ListViewItem">
                     <Setter Property="FontSize" Value="15"/>
                 </Style>
+                <Style TargetType="TextBlock">
+                    <Setter Property="TextWrapping" Value="Wrap" />
+                </Style>
 
                 <cv:CardTypeConverter x:Key="CardTypeConverter" />
                 <cv:BandTypeConverter x:Key="BandTypeConverter" />
@@ -44,8 +47,8 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn
-                        Header="名前" 
+                    <GridViewColumn 
+                        Header="名前"
                         DisplayMemberBinding="{Binding Name}" />
                     <GridViewColumn
                         Header="タイトル" 
