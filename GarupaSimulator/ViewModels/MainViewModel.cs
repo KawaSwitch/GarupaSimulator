@@ -664,6 +664,8 @@ namespace GarupaSimulator.ViewModels
         /// <remarks>CloseViewCommandをバインディングした際に呼ばれる</remarks>
         protected override void CloseViewCommandImplement(object o)
         {
+            // カード情報を保存する
+            File.BinarySerializer.SaveToBinaryFile(this.Cards, _cardInfoPath);
             // 置物情報を保存する
             File.XmlSerializer.SaveToBinaryFile(_areas, _areas.GetType(), _okimonoInfoPath);
 
@@ -674,6 +676,19 @@ namespace GarupaSimulator.ViewModels
 
         #region コマンド
 
+        private ICommand showSpecTeamCommand;
+        public ICommand ShowSpecializedTeamViewCommand => showSpecTeamCommand ?? (showSpecTeamCommand = new DelegateCommand(ShowSpecializedTeamView, null));
+
+        /// <summary>
+        /// 特化編成ビューをモーダレスで開く
+        /// </summary>
+        private void ShowSpecializedTeamView(object o)
+        {
+            // モーダレスで特化編成ウィンドウ表示
+            var vm = new ViewModels.SpecializedTeamViewModel(_cards.ToList(), _areas);
+            App.ViewManager.ShowModelessView<Views.SpecializedTeamWindow>(vm, this);
+        }
+
         private ICommand saveOwnedCommand;
         public ICommand SaveOwnedCommand => saveOwnedCommand ?? (saveOwnedCommand = new DelegateCommand(SaveOwnedInfo, null));
 
@@ -682,7 +697,7 @@ namespace GarupaSimulator.ViewModels
         /// </summary>
         private void SaveOwnedInfo(object o)
         {
-            // XMLファイルに上書きする
+            // XMLファイルに上書きするだけ
             File.BinarySerializer.SaveToBinaryFile(this.Cards, _cardInfoPath);
         }
 
@@ -694,7 +709,7 @@ namespace GarupaSimulator.ViewModels
         /// </summary>
         private void ShowTeamUpView(object o)
         {
-            // モーダレスで編成ウィンドウ表示
+            // モーダレスで最適編成ウィンドウ表示
             var vm = new ViewModels.TeamUpViewModel(_cards.ToList(), _areas);
             App.ViewManager.ShowModelessView<Views.TeamUpWindow>(vm, this);
         }

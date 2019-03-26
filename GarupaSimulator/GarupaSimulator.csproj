@@ -84,15 +84,20 @@
       <DependentUpon>CardInfoResources.resx</DependentUpon>
     </Compile>
     <Compile Include="Converters\CardConverter.cs" />
+    <Compile Include="Team.cs" />
     <Compile Include="Util\DirectoryUtil.cs" />
     <Compile Include="Util\EnumUtil.cs" />
     <Compile Include="Util\Localize.cs" />
     <Compile Include="Util\RegexUtil.cs" />
     <Compile Include="ViewModels\MainViewModel.cs" />
     <Compile Include="ViewModels\OkimonoViewModel.cs" />
+    <Compile Include="ViewModels\SpecializedTeamViewModel.cs" />
     <Compile Include="ViewModels\TeamUpViewModel.cs" />
     <Compile Include="Views\OkimonoWindow.xaml.cs">
       <DependentUpon>OkimonoWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\SpecializedTeamWindow.xaml.cs">
+      <DependentUpon>SpecializedTeamWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\TeamUpWindow.xaml.cs">
       <DependentUpon>TeamUpWindow.xaml</DependentUpon>
@@ -124,6 +129,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="Views\OkimonoWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\SpecializedTeamWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

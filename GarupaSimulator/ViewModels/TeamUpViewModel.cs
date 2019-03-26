@@ -29,11 +29,6 @@ namespace GarupaSimulator.ViewModels
         /// </summary>
         private string _eventInfoPath = @"eventInfo.xml";
 
-        /// <summary>
-        /// 編成メンバーの人数
-        /// </summary>
-        private static readonly int _teamMemberCount = 5;
-
         #region ctor
 
         /// <summary>
@@ -95,7 +90,7 @@ namespace GarupaSimulator.ViewModels
         /// <remarks>CloseViewCommandをバインディングした際に呼ばれる</remarks>
         protected override void CloseViewCommandImplement(object o)
         {
-            // 置物情報を保存する
+            // イベント情報を保存する
             File.XmlSerializer.SaveToBinaryFile(_events, _events.GetType(), _eventInfoPath);
 
             base.CloseViewCommandImplement(o);
@@ -141,18 +136,16 @@ namespace GarupaSimulator.ViewModels
             // TODO: 各イベントごとの最適編成
 
             // イベント外 編成パターン
-            var optimumPattern = this.TeamUpWhenNoEvents(cardGroups, okimonoPatterns);
-            var optimumCharacters = optimumPattern.OptimumCharacters as IEnumerable<Card>;
+            var optimumTeam = TeamUpWhenNoEvents(cardGroups, okimonoPatterns);
 
             // 最適編成結果の適用
             {
-                var shortageCards = this.GetTeamMemberShortageCards(optimumCharacters);
-                this.TeamCards = new ObservableCollection<Card>(optimumCharacters.Concat(shortageCards));
+                this.TeamCards = new ObservableCollection<Card>(optimumTeam.Members);
               
                 // TODO: 後から最適の置物追加
 
                 this.Life = this.Life;
-                this.BandPower = (int)optimumPattern.PatternPower; // NOTE: ここで整数にキャストして小数点を切り捨てるとガルパの数値と一致
+                this.BandPower = optimumTeam.OverallPower;
             }
         }
 
@@ -160,7 +153,8 @@ namespace GarupaSimulator.ViewModels
         /// イベントが無いときの最適編成パターンを取得
         /// </summary>
         /// <remarks>バンド/属性特化の置物パターンを適用する</remarks>
-        private dynamic TeamUpWhenNoEvents(
+        /// <returns>最適編成パターン</returns>
+        internal static Team TeamUpWhenNoEvents(
             IEnumerable<IGrouping<string, Card>> cardGroups,
             List<(IEnumerable<Okimono> okimonos, Card.Band targetBand, Card.Type targetAttribute)> okimonoPatterns)
         {
@@ -215,10 +209,10 @@ namespace GarupaSimulator.ViewModels
                 .OrderByDescending(item => item.CardPower)
                 .Take(5);
 
-                return new { PatternPower = optimumCharacters.Sum(c => c.CardPower), OptimumCharacters = optimumCharacters.Select(c => c.Card), Pattern = pattern };
+                return new Team { Members = optimumCharacters.Select(c => c.Card), Okimonos = pattern.okimonos };
             })
             //  バンド/属性特化の各パターンを適用した編成のうち一番総合力の高いパターンを取得
-            .OrderByDescending(item => item.PatternPower)
+            .OrderByDescending(item => item.OverallPower)
             .FirstOrDefault();
         }
 
@@ -231,18 +225,7 @@ namespace GarupaSimulator.ViewModels
 
         #region Private Helper
 
-        /// <summary>
-        /// 不足分のカードを取得する（デフォルト値）
-        /// </summary>
-        private IEnumerable<Card> GetTeamMemberShortageCards(IEnumerable<Card> optimumCharacters)
-        {
-            // 既定メンバー数(5人)に足りない分のカードを作成
-            var emptyCards = new List<Card>();
-            for (int i = 0; i < _teamMemberCount - optimumCharacters.Count(); ++i)
-                emptyCards.Add(new Card());
 
-            return emptyCards;
-        }
 
         #endregion
 

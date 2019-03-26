@@ -85,10 +85,13 @@
         </ListView>
 
         <StackPanel Grid.Row="1"  Orientation="Horizontal">
-            <Button Content="編成" Width="80" Command="{Binding ShowTeamUpViewCommand}" />
-            <Button Content="更新" Width="80" Command="{Binding UpdateCardsCommand}" />
-            <Button Content="再更新" Width="80" Command="{Binding ReUpdateCardsCommand}" />
-            <Button Content="置物設定" Width="80" Command="{Binding ShowOkimonoViewCommand}" />
+            <Button Content="最適編成" Width="80" Command="{Binding ShowTeamUpViewCommand}" />
+            <Button Content="特化編成" Width="80" Command="{Binding ShowSpecializedTeamViewCommand}" />
+
+            <Button Content="更新" Width="80" Command="{Binding UpdateCardsCommand}" Margin="5 0 0 0" />
+            <Button IsEnabled="False" Content="再更新" Width="80" Command="{Binding ReUpdateCardsCommand}" />
+            
+            <Button Content="置物設定" Width="80" Command="{Binding ShowOkimonoViewCommand}" Margin="5 0 0 0" />
 
             <Button Content="所持情報保存" Width="80" Command="{Binding SaveOwnedCommand}" Margin="5 0 0 0" />
         </StackPanel>
