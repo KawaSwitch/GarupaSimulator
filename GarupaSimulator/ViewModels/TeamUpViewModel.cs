@@ -154,7 +154,7 @@ namespace GarupaSimulator.ViewModels
         /// </summary>
         /// <remarks>バンド/属性特化の置物パターンを適用する</remarks>
         /// <returns>最適編成パターン</returns>
-        internal static Team TeamUpWhenNoEvents(
+        private Team TeamUpWhenNoEvents(
             IEnumerable<IGrouping<string, Card>> cardGroups,
             List<(IEnumerable<Okimono> okimonos, Card.Band targetBand, Card.Type targetAttribute)> okimonoPatterns)
         {

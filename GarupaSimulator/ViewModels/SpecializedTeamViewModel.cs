@@ -24,11 +24,6 @@ namespace GarupaSimulator.ViewModels
         /// </summary>
         private List<OkimonoArea> _areas;
 
-        /// <summary>
-        /// 編成メンバーの人数
-        /// </summary>
-        private static readonly int _teamMemberCount = 5;
-
         #region ctor
 
         /// <summary>
@@ -84,14 +79,75 @@ namespace GarupaSimulator.ViewModels
                 }
             }
 
-            // TODO: 未完成
-
-            // イベント外 編成パターン
-            var optimumTeam = ViewModels.TeamUpViewModel.TeamUpWhenNoEvents(cardGroups, okimonoPatterns);
-            var optimumCharacters = optimumTeam.Members;
+            // 各パターンの最適編成
+            var optimumTeams = okimonoPatterns.Select(pattern => this.TeamUpWithPattern(cardGroups, pattern));
 
             // 最適編成結果の通知
-            //this.TeamCards = new ObservableCollection<Card>(optimumCharacters);
+            this.Teams = new ObservableCollection<SpecializedTeam>(optimumTeams);
+        }
+
+
+        /// <summary>
+        /// バンド/属性特化の置物パターンの最適編成パターンを取得
+        /// </summary>
+        /// <remarks>現状は総合力が一番高くなる編成を最適としている</remarks>
+        /// <returns>最適編成パターン</returns>
+        private SpecializedTeam TeamUpWithPattern(
+            IEnumerable<IGrouping<string, Card>> cardGroups,
+            (IEnumerable<Okimono> okimonos, Card.Band targetBand, Card.Type targetAttribute) okimonoPattern)
+        {
+            // 置物による3つのカードボーナスを先に計算する
+            var bandBonusOkimonoList = okimonoPattern.okimonos.Where(okimono => okimono.TargetBands.Count > 0);
+            var performanceBandBonus = bandBonusOkimonoList.Sum(o => o.Bonus[o.Level].performance) / 10.0;
+            var techniqueBandBonus = bandBonusOkimonoList.Sum(o => o.Bonus[o.Level].technique) / 10.0;
+            var visualBandBonus = bandBonusOkimonoList.Sum(o => o.Bonus[o.Level].visual) / 10.0;
+
+            var typeBonusOkimonoList = okimonoPattern.okimonos.Where(okimono => okimono.TargetTypes.Count > 0);
+            var performanceTypeBonus = typeBonusOkimonoList.Sum(okimono => okimono.Bonus[okimono.Level].performance) / 10.0;
+            var techniqueTypeBonus = typeBonusOkimonoList.Sum(okimono => okimono.Bonus[okimono.Level].technique) / 10.0;
+            var visualTypeBonus = typeBonusOkimonoList.Sum(okimono => okimono.Bonus[okimono.Level].visual) / 10.0;
+
+            // 各キャラのカードの中で置物補正込みの総合力が最も高い1枚を取り出し, その総合力が高い順に5キャラを選ぶ
+            var optimumCharacters = cardGroups.Select(group => group
+                .Select(card =>
+                {
+                    var bonusPerformance = default(double);
+                    var bonusTechnique = default(double);
+                    var bonusVisual = default(double);
+
+                    if (card.BandName == okimonoPattern.targetBand)
+                    {
+                        bonusPerformance += card.MaxPerformance * (performanceBandBonus / 100.0);
+                        bonusTechnique += card.MaxTechnique * (techniqueBandBonus / 100.0);
+                        bonusVisual += card.MaxVisual * (visualBandBonus / 100.0);
+                    }
+                    if (card.CardType == okimonoPattern.targetAttribute)
+                    {
+                        bonusPerformance += card.MaxPerformance * (performanceTypeBonus / 100.0);
+                        bonusTechnique += card.MaxTechnique * (techniqueTypeBonus / 100.0);
+                        bonusVisual += card.MaxVisual * (visualTypeBonus / 100.0);
+                    }
+
+                    // 補正値込みのカード単体の総合力
+                    var cardPower = (
+                        card.MaxPerformance + bonusPerformance +
+                        card.MaxTechnique + bonusTechnique +
+                        card.MaxVisual + bonusVisual);
+
+                    return new
+                    {
+                        CardPower = cardPower,
+                        Card = card,
+                    };
+                })
+                .OrderByDescending(item => item.CardPower)
+                .FirstOrDefault())
+            .OrderByDescending(item => item.CardPower)
+            .Take(5);
+
+            return new SpecializedTeam {
+                Members = optimumCharacters.Select(c => c.Card), Okimonos = okimonoPattern.okimonos,
+                BandSpecialized = okimonoPattern.targetBand, TypeSpecialized = okimonoPattern.targetAttribute};
         }
 
         #endregion
@@ -109,12 +165,12 @@ namespace GarupaSimulator.ViewModels
         /// <summary>
         /// 編成
         /// </summary>
-        private ObservableCollection<Team> _teams;
+        private ObservableCollection<SpecializedTeam> _teams;
 
         /// <summary>
         /// 編成 変更通知用プロパティ
         /// </summary>
-        public ObservableCollection<Team> Teams
+        public ObservableCollection<SpecializedTeam> Teams
         {
             get
             {

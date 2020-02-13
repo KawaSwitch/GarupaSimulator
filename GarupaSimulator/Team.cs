@@ -7,6 +7,26 @@ using System.Threading.Tasks;
 namespace GarupaSimulator
 {
     /// <summary>
+    /// 特化編成クラス
+    /// </summary>
+    public class SpecializedTeam : Team
+    {
+        #region Property
+
+        /// <summary>
+        /// 特化バンド
+        /// </summary>
+        public Card.Band BandSpecialized { get; set; }
+
+        /// <summary>
+        /// 特化カード属性
+        /// </summary>
+        public Card.Type TypeSpecialized { get; set; }
+
+        #endregion
+    }
+
+    /// <summary>
     /// 編成 クラス
     /// </summary>
     public class Team : WpfUtil.ModelBase
@@ -24,7 +44,7 @@ namespace GarupaSimulator
 
         #region Property
 
-        private IEnumerable<Card> _members = default(IEnumerable<Card>);
+        private IEnumerable<Card> _members;
 
         /// <summary>
         /// 編成メンバー
@@ -72,7 +92,43 @@ namespace GarupaSimulator
         /// <summary>
         /// 編成の総合力
         /// </summary>
-        public int OverallPower { get { return this.PerformancePower + this.TechniquePower + this.VisualPower; } }
+        //public int OverallPower { get { return (int)(this.CalcTeamPerformancePower() + this.CalcTeamTechniquePower() + this.CalcTeamVisualPower()); } }
+
+        /// <summary>
+        /// バンドパラメータ
+        /// </summary>
+        public int BandPower { get { return this.Members.Sum(m => m.MaxTotal); } }
+
+        /// <summary>
+        /// エリアアイテムボーナス
+        /// </summary>
+        public int AreaItemBonus
+        {
+            get
+            {
+                var sum = this.Members.Select(m =>
+                {
+                    var bonusPerCard = default(double);
+
+                    foreach (var okimono in this.Okimonos)
+                    {
+                        if (okimono.TargetBands.Contains(m.BandName) || okimono.TargetTypes.Contains(m.CardType))
+                            bonusPerCard += m.MaxTotal * (okimono.Bonus[okimono.Level].performance / 1000.0);
+                    }
+
+                    return bonusPerCard;
+                }).ToList()
+                .Sum();
+
+                return (int)sum;
+            }
+        }
+
+        public int OverallPower
+        {
+            get =>
+                this.BandPower + this.AreaItemBonus;
+        }
 
         #endregion
 
